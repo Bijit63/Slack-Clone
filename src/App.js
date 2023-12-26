@@ -92,7 +92,7 @@ function App() {
     {
       fetchPersonalChatRooms(JSON.parse(localStorage.getItem('user')).uid);
     }
-  }, [])
+  }, [user])
 
 
   return (
