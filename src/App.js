@@ -60,7 +60,6 @@ function App() {
       return [];
     }
   };
-
   // to get all personal message rooms 
 
 
@@ -88,7 +87,11 @@ function App() {
 
   useEffect(() =>{
     getChannels();
-    fetchPersonalChatRooms(JSON.parse(localStorage.getItem('user')).uid);
+    
+    if(user)
+    {
+      fetchPersonalChatRooms(JSON.parse(localStorage.getItem('user')).uid);
+    }
   }, [])
 
 
