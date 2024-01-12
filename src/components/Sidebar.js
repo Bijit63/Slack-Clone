@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { IoIosAddCircleOutline } from 'react-icons/io';
 import { FaPlus } from 'react-icons/fa';
@@ -9,7 +9,7 @@ import {  useLocation, useNavigate } from 'react-router-dom'
 function Sidebar(props) {
 
     const navigate = useNavigate();
-
+    const [ownerID, setownerID] = useState(JSON.parse(localStorage.getItem('user')).uid)
 
     const goToChannel = (id) => {
         if(id){
@@ -32,7 +32,10 @@ function Sidebar(props) {
         const promptName = prompt("Enter channel name");
         if(promptName){
             db.collection('rooms').add({
-                name: promptName
+                name: promptName,
+                owner : ownerID,
+                members:[ownerID],
+                managers : [ownerID]
             })
         }
     }

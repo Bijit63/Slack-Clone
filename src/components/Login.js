@@ -11,7 +11,8 @@ function Login(props) {
             const newUser = {
               name: result.user.displayName,
               photo: result.user.photoURL,
-              uid: result.user.uid
+              uid: result.user.uid,
+              role:"user"
             };
       
             const userRef = db.collection('userlists').doc(newUser.uid);

@@ -69,12 +69,14 @@ function App() {
   
   // TO get channels 
   const getChannels = () => {
-    db.collection('rooms').onSnapshot((snapshot) => {
-      setRooms(snapshot.docs.map((doc) => {
-        return { id: doc.id, name: doc.data().name }
-      }))
-    })
-  }
+    db.collection('rooms')
+      .where('members', 'array-contains', JSON.parse(localStorage.getItem('user')).uid)
+      .onSnapshot((snapshot) => {
+        setRooms(snapshot.docs.map((doc) => {
+          return { id: doc.id, name: doc.data().name }
+        }))
+      });
+  };
   // TO get channels 
 
   const signOut = () => {
