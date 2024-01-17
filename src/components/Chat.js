@@ -4,20 +4,55 @@ import { BsInfoCircle } from 'react-icons/bs';
 import ChatInput from './ChatInput'
 import ChatMessage from './ChatMessage'
 import db from '../firebase'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import firebase from 'firebase/compat/app';
 import { BsPlus } from 'react-icons/bs';
 import './Styles/Chat.css'
+import { MdMoreHoriz } from 'react-icons/md';
+import { IoMdMore } from 'react-icons/io';
+import ChatSideBar from './ChatSideBar';
+
 
 function Chat({ user }) {
 
-    let { channelId } = useParams();
-    const [ channel, setChannel ] = useState();
-    const [ messages, setMessages ] = useState([])
-    const [ Owner, setOwner ] = useState(false)
-    const [ Manager, setManager ] = useState(false)
+  const navigate = useNavigate()
+  
 
-    const [ users, setusers ] = useState([])
+  let { channelId } = useParams();
+  const [ channel, setChannel ] = useState();
+  const [ messages, setMessages ] = useState([])
+  const [ Owner, setOwner ] = useState(false)
+  const [ Manager, setManager ] = useState(false)
+
+  const [ newusers, setnewusers ] = useState([])
+  const [ existingusers, setexistingusers ] = useState([])
+  
+
+
+  const deletechannel = async ()=>{
+    if(Owner)
+    {
+      
+    const roomRef = db.collection('rooms').doc(channelId);
+    roomRef.delete()
+    .then(() => {
+      console.log(`Room ${channelId} deleted successfully`);
+    })
+    .catch((error) => {
+      console.error('Error deleting room:', error);
+    });
+    navigate('/')
+
+  }
+  }
+    
+  const [translateX, setTranslateX] = useState(1800);
+
+  const handleTranslateClick = () => {
+    setTranslateX(0); // Adjust the translation amount as needed
+  };
+
+
     
 
     const getMessages = () => {
@@ -70,34 +105,52 @@ function Chat({ user }) {
 
                 const roomData = roomSnapshot.data();
                 const existingMembers = roomData.members || [];
+                console.log(existingMembers)
                 
                 const usersSnapshot = await db.collection('userlists').get();
                 
-                const usersData = [];
+                const newusersData = [];
+                const existingusersData = [];
                 usersSnapshot.forEach((doc) => {
                   const userId = doc.id;
                   const username = doc.data().name;
-                
-                  // Check if the user is not already a member of the room
+                  const image = doc.data().photo; 
+                  const role = doc.data().role; 
+                                
+                  
                   if (!existingMembers.includes(userId)) {
                     const userData = {
                       userId: userId,
-                      username: username
+                      username: username,
+                      image:image,
+                      role:role
                     };
-                    usersData.push(userData);
+                    newusersData.push(userData);
+                  }
+                  else{
+
+                    const userData = {
+                      userId: userId,
+                      username: username,
+                      image:image,
+                      role:role
+                    };
+                    existingusersData.push(userData);
+                    
                   }
                 });
                 
-          
-              console.log('Usernames and IDs:');
-              setusers(usersData);
+                console.log(newusersData)
+              setnewusers(newusersData);
+              setexistingusers(existingusersData);
+              
             } catch (error) {
               console.error('Error fetching usernames and IDs:', error);
               return [];
             }
           };
           fetchUsernamesAndIds();
-    }, [])
+    }, [channelId])
 
 
 
@@ -261,24 +314,21 @@ function Chat({ user }) {
       <div class="container-chat">
       <div class="header">
           <div class="channel">
+            <div>
               <div class="channel-name">
                   You are in Channel - { channel && channel.name}
               </div>
               <div class="channel-info">
                   Company-wide announcements and work-based matters
               </div>
-          </div>
-          <div class="usernames-container">
-          <div className='username-container-p'>
-            Add Users 
-          </div>
-    {
-        users.map((u, index) => (
-            <div className='username-container-p' onClick={()=>{adduser(u.userId)}} key={index}>{u.username}
             </div>
-        ))
-    }
- </div>
+
+            <div className="more-chat" onClick={()=>{handleTranslateClick()}}>
+      <IoMdMore className='more-chat-icon'/>
+            </div>
+
+          </div>
+     
         </div>
         <div class="message-container">
                 {
@@ -295,7 +345,11 @@ function Chat({ user }) {
                 }
             </div>
             <ChatInput sendMessage={sendMessage} />
+
+            <ChatSideBar translateX={translateX} existingusers={existingusers} setexistingusers={setexistingusers}
+            setnewusers={setnewusers} adduser={adduser} newusers={newusers} setTranslateX={setTranslateX} deletechannel={deletechannel} />
             </div>
+
 
     )
 }

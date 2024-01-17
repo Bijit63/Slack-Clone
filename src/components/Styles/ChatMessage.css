@@ -1,20 +1,22 @@
 .container-chatmessage {
-            padding: 8px 20px;
+            padding: 10px 20px;
             display: flex;
-            align-items: center; 
+            /* align-items: center;  */
+            flex-wrap: wrap;
         }
         
 .container-ownchatmessage {
-            padding: 8px 20px;
+            padding: 10px 20px;
             display: flex;
-            align-items: center; 
+            /* align-items: center;  */
             justify-content: end;
+            flex-direction: row-reverse;
         }
 
         .user-avatar {
             width: 36px;
             height: 36px;
-            border-radius: 2px;
+            border-radius: 50%;
             overflow: hidden;
             margin-right: 8px;
         }
@@ -26,14 +28,17 @@
         .message-content {
             display: flex;
             flex-direction: column;
+            max-width: 700px;
         }
 
         .name {
             font-weight: 900;
             font-size: 15px;
             line-height: 1.4;
+            text-align: start;
         }
 
+        
         .name span {
             margin-left: 8px;
             font-weight: 400;
@@ -41,7 +46,23 @@
             font-size: 13px;
         }
 
+
+        .nameown {
+            font-weight: 900;
+            font-size: 15px;
+            line-height: 1.4;
+            text-align: end;
+        }
+
+        .nameown span {
+            margin-left: 8px;
+            font-weight: 400;
+            color: rgb(97, 96, 97);
+            font-size: 13px;
+        }
+
         .text{
-            
             text-align: start;
+            max-width: 700px;
+            text-wrap: wrap;
         }

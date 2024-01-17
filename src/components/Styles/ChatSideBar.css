@@ -1,0 +1,125 @@
+.chat-sidebar-container{
+height: 94.5%;
+width: 100%;
+left: 0%;
+z-index: 1;
+/* background-color: aqua; */
+
+transition: transform 0.2s ease-in-out;
+
+position: absolute;
+display: flex;
+flex-direction: row-reverse;
+}
+
+.crossback{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    
+backdrop-filter: blur(2px); 
+    z-index: 2;
+}
+
+.chat-sidebar{
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    height: 100%;
+    background-color: white;
+    padding: 0px 20px;
+    box-shadow: 0 0px 10px black;
+    overflow-y: scroll;
+    
+    scrollbar-width: thin;  /* Firefox */
+    scrollbar-color: transparent transparent;  /* Firefox */
+
+    /* Webkit browsers (Chrome, Safari) */
+    &::-webkit-scrollbar {
+        width: 6px;  /* Set the width of the scrollbar */
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #a0a0a0;  /* Set the color of the scrollbar thumb */
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: transparent;  /* Set the color of the scrollbar track */
+    }
+}
+
+
+
+
+.cross {
+    cursor: pointer;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    display: flex;
+    /* flex-direction: row-reverse; */
+  }
+  .svg {
+    fill: #ecf0f1;
+    width: 20px;
+    height: 20px; 
+  }
+
+
+  .delete-channel-btn {
+    background-color: #e74c3c;
+    color: #ecf0f1;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+
+  .delete-channel-btn:hover {
+    background-color: #c0392b;
+  }
+
+  .members-section {
+    display: flex;
+    flex-direction: column;
+    /* min-height: 70%; */
+    margin-bottom: 20px;
+  }
+  .members-header{
+    background-color: black;
+    color: white;
+    font-size: 14px;
+    padding: 8px 0px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    text-align: center;
+  }
+  .members-header-new{
+    background-color: black;
+    color: white;
+    font-size: 14px;
+    padding: 8px 0px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    border-radius: 4px;
+    text-align: center;
+  }
+
+  .member {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 14px;
+    cursor: pointer;
+
+  }
+
+  .member img {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }

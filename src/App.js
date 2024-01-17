@@ -107,7 +107,7 @@ function App() {
       .where('members', 'array-contains', JSON.parse(localStorage.getItem('user')).uid)
       .onSnapshot((snapshot) => {
         setRooms(snapshot.docs.map((doc) => {
-          return { id: doc.id, name: doc.data().name }
+          return { id: doc.id, name: doc.data().name,restricted : doc.data().restricted }
         }))
       });
   };
@@ -145,6 +145,7 @@ function App() {
               <Routes>
                 <Route path="/Users" element={<UserList userlists={userlists} setUserLists={setUserLists} />} />
                 <Route path="/room/:channelId" element={<Chat user={user} />} />
+
                 <Route path="/personalroom/:channelId" element={<PersonalChat user={user} />} />
                 <Route path="/"  />
               </Routes>

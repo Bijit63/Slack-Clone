@@ -35,6 +35,7 @@ function Sidebar(props) {
         if(promptName){
             db.collection('rooms').add({
                 name: promptName,
+                restricted : true,
                 owner : ownerID,
                 members:[ownerID],
                 managers : [ownerID]

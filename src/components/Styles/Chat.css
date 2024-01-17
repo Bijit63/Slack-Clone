@@ -1,16 +1,21 @@
 body {
     margin: 0;
     font-family: 'Arial', sans-serif;
+  overflow-x: hidden;
 }
 
 .container-chat {
+    
+    overflow-x: hidden;
     display: grid;
     grid-template-rows: 64px auto min-content;
     min-height: 0;
 }
 
 .channel {
-    /* Add your channel styles here */
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .channel-details {
@@ -28,6 +33,20 @@ body {
     color: #606060;
     font-size: 13px;
     margin-top: 8px;
+}
+
+.more-chat{
+    cursor: pointer;
+    border: 2px solid black;
+    height: 22px;
+    width: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+}
+.more-chat-icon{
+    font-size: 20px;
 }
 
 .info {
@@ -68,3 +87,9 @@ body {
 .username-container-p:hover {
     background-color: red;
 }
+
+
+
+
+
+

@@ -51,7 +51,7 @@ function ChatMessage({ text, name, image, timestamp,uid }) {
             <img src={image} onClick={()=>{checkOrCreateChatRoom(uid,JSON.parse(localStorage.getItem('user')).uid)}} />
         </div>
         <div className="message-content">
-            <span className="name">
+            <span className={`${JSON.parse(localStorage.getItem('user')).uid===uid?'nameown':"name"} `}>
                 {name}
                 <span>{new Date(timestamp.toDate()).toUTCString()}</span>
             </span>
