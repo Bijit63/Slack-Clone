@@ -18,10 +18,6 @@ export const sidebarItemsData = [
         text: "Save Items"
     },
     {
-        icon: <BsPeople />,
-        text: "Peoples & Groups"
-    },
-    {
         icon: <BsGrid1X2Fill />,
         text: "More"
     }

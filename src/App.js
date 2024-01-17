@@ -10,13 +10,46 @@ import Sidebar from './components/Sidebar'
 import db from './firebase'
 import { auth, provider } from "./firebase";
 import PersonalChat from './components/PersonalChat';
+import UserList from './components/UserList';
 
 
 function App() {
 
   const [rooms, setRooms] = useState([]) 
   const [usersChatRooms, setusersChatRooms] = useState([]) 
-  const [ user, setUser ] = useState(JSON.parse(localStorage.getItem('user'))); 
+  const [ user, setUser ] = useState(JSON.parse(localStorage.getItem('user')));
+  const [userlists,setUserLists] = useState([])
+
+
+
+
+
+  // to get all the users 
+
+  const getuserLists = async () => {
+    try {
+      const userListsSnapshot = await db.collection('userlists').get();
+  
+      const userListsData = [];
+      userListsSnapshot.forEach((doc) => {
+        const userData = {
+          userId: doc.id,
+          username: doc.data().name,
+          image:doc.data().photo,
+          role:doc.data().role
+        };
+        userListsData.push(userData);
+      });
+  
+      console.log('User Lists:', userListsData);
+      setUserLists(userListsData)
+    } catch (error) {
+      console.error('Error fetching user lists:', error);
+      return [];
+    }
+  };
+
+  // to get all the users 
 
 
 
@@ -53,6 +86,7 @@ function App() {
         personalChatRooms.push(roomDetails);
       }
       
+      console.log(personalChatRooms)
       setusersChatRooms(personalChatRooms)
       console.log('Personal Chat Rooms:', personalChatRooms);
     } catch (error) {
@@ -88,11 +122,12 @@ function App() {
   }
 
   useEffect(() =>{
-    getChannels();
     
     if(user)
     {
+      getChannels();
       fetchPersonalChatRooms(JSON.parse(localStorage.getItem('user')).uid);
+      getuserLists();
     }
   }, [user])
 
@@ -108,6 +143,7 @@ function App() {
             <Main>
               <Sidebar rooms={rooms} usersChatRooms={usersChatRooms} />
               <Routes>
+                <Route path="/Users" element={<UserList userlists={userlists} setUserLists={setUserLists} />} />
                 <Route path="/room/:channelId" element={<Chat user={user} />} />
                 <Route path="/personalroom/:channelId" element={<PersonalChat user={user} />} />
                 <Route path="/"  />

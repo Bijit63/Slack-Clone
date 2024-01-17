@@ -5,6 +5,8 @@ import { FaPlus } from 'react-icons/fa';
 import { sidebarItemsData } from '../data/SidebarData'
 import db from '../firebase'
 import {  useLocation, useNavigate } from 'react-router-dom'
+import './Styles/Sidebar.css'
+import { BsPeople } from 'react-icons/bs';
 
 function Sidebar(props) {
 
@@ -41,51 +43,56 @@ function Sidebar(props) {
     }
 
     return (
-        <Container>
-            <WorkspaceContainer>
-                <Name>
-                    CleverProgrammer
-                </Name>
-                <NewMessage>
+        <div className="container-sidebar">
+        <div className="workspace-container-sidebar">
+        <div className="name-sidebar">
+                UA-Slack-App
+            </div>
+
+                <div className="new-message-sidebar">
                     <IoIosAddCircleOutline  />
-                </NewMessage>
-            </WorkspaceContainer>
-            <MainChannels>
+                </div>
+            </div>
+            <div className="main-channels-sidebar">
                 {
                     sidebarItemsData.map(item => (
-                        <MainChannelItem>
+                        <div className='main-channel-item-sidebar'>
                             {item.icon}
                             {item.text}
-                        </MainChannelItem>
+                        </div>
                     ))
                 }
-            </MainChannels>
-            <ChannelsContainer>
-                <NewChannelContainer>
+                <div className='main-channel-item-sidebar' onClick={()=>{navigate('/Users')}} >
+                    <BsPeople/>
+                    UserList
+                </div>
+            </div>
+            <div className="channels-container-sidebar">
+                <div className="new-channel-container-sidebar ">
                     <div>
                         Channels
                     </div>
                     <FaPlus onClick={addChannel} />
-                </NewChannelContainer>
-                <ChannelsList>
+                </div>
+                <div className="channels-list-sidebar">
                     {
                         props.rooms.map(item => (
-                            <Channel onClick={()=>goToChannel(item.id)}>
+                            <div className='channel-sidebar' onClick={()=>goToChannel(item.id)}>
                                 # {item.name}
-                            </Channel>
+                            </div>
                         ))
                     }
-                </ChannelsList>
-            </ChannelsContainer>
+                </div>
+            </div>
 
             
-            <ChannelsContainer>
-                <NewChannelContainer>
+            <div className="channels-container-sidebar">
+                <div className="new-channel-container-sidebar">
                     <div>
                         Personal Messages
                     </div>
-                </NewChannelContainer>
-                <ChannelsList>
+                </div>
+                <div className="channels-list-sidebar">
                     {
                         props.usersChatRooms.map(item => (
                             <Channel onClick={()=>goToDM(item.roomId)}>
@@ -93,79 +100,18 @@ function Sidebar(props) {
                             </Channel>
                         ))
                     }
-                </ChannelsList>
-            </ChannelsContainer>
+                </div>
+            </div>
             
-        </Container>
+        </div>
     )
 }
 
 export default Sidebar
 
 
-const Container = styled.div`
-    background: #3F0E40;
 
-`
 
-const WorkspaceContainer = styled.div`
-    color: white;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    padding-left: 19px;
-    justify-content: space-between;
-    border-bottom: 1px solid  #532753;
-`
-
-const Name = styled.div``
-
-const NewMessage = styled.div`
-    width: 36px;
-    height: 36px;
-    background: white;
-    color: #3F0E40;
-    fill: #3F0E40;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    margin-right: 20px;
-    cursor: pointer;
-`
-
-const MainChannels = styled.div`
-    padding-top: 20px;
-`
-
-const MainChannelItem = styled.div`
-    color: rgb(188,171,188);
-    display: grid;
-    grid-template-columns: 15% auto;
-    height: 28px;
-    align-items: center;
-    padding-left: 19px;
-    cursor: pointer;
-    :hover {
-        background: #350D36;
-    }
-`
-
-const ChannelsContainer = styled.div`
-    color: rgb(188,171,188);
-    margin-top: 10px;
-`
-
-const NewChannelContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 28px;
-    padding-left: 19px;
-    padding-right: 12px;
-`
-
-const ChannelsList = styled.div``
 
 const Channel = styled.div`
     height: 28px;

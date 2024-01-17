@@ -7,6 +7,7 @@ import db from '../firebase'
 import { useParams } from 'react-router-dom'
 import firebase from 'firebase/compat/app';
 import { BsPlus } from 'react-icons/bs';
+import './Styles/Chat.css'
 
 function Chat({ user }) {
 
@@ -257,28 +258,29 @@ function Chat({ user }) {
     
 
     return (
-        <Container>
-            <Header>
-                <Channel>
-                    <ChannelName>
-                        You are in Channel  - { channel && channel.name}
-                    </ChannelName>
-                    <ChannelInfo>
-                    Company-wide announcements and work-based matters
-                    </ChannelInfo>
-                </Channel>
-
-                <Usernamescontainer>
+      <div class="container-chat">
+      <div class="header">
+          <div class="channel">
+              <div class="channel-name">
+                  You are in Channel - { channel && channel.name}
+              </div>
+              <div class="channel-info">
+                  Company-wide announcements and work-based matters
+              </div>
+          </div>
+          <div class="usernames-container">
+          <div className='username-container-p'>
+            Add Users 
+          </div>
     {
         users.map((u, index) => (
-            <Usernamescontainerp onClick={()=>{adduser(u.userId)}} key={index}>{u.username}
-            </Usernamescontainerp>
-
+            <div className='username-container-p' onClick={()=>{adduser(u.userId)}} key={index}>{u.username}
+            </div>
         ))
     }
-</Usernamescontainer>
-            </Header>
-            <MessageContainer>
+ </div>
+        </div>
+        <div class="message-container">
                 {
                     messages.length > 0 &&
                     messages.map((data, index)=>(
@@ -291,74 +293,11 @@ function Chat({ user }) {
                         />
                     ))
                 }
-            </MessageContainer>
+            </div>
             <ChatInput sendMessage={sendMessage} />
-        </Container>
+            </div>
 
     )
 }
 
 export default Chat;
-
-const Container = styled.div`
-    display: grid;
-    grid-template-rows: 64px auto min-content;
-    min-height: 0;
-`
-
-const Channel = styled.div``
-
-const ChannelDetails = styled.div`
-    display: flex;
-    align-items: center;
-    color: #606060;
-`
-
-const ChannelName = styled.div`
-    font-weight: 700;
-`
-
-const ChannelInfo = styled.div`
-    font-weight: 400;
-    color: #606060;
-    font-size: 13px;
-    margin-top: 8px;
-`
-
-const Info = styled(BsInfoCircle)`
-    margin-left: 10px;
-`
-
-const Header = styled.div`
-    padding-left: 20px;
-    padding-right: 20px;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid rgba(83, 39, 83,.13);
-    justify-content: space-between;
-`
-
-const MessageContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    overflow-y: scroll;
-`
-
-const Usernamescontainer = styled.div`
-background-color: #f0f0f0;
-padding: 10px;
-border-radius: 8px;
-position : absolute;
-right : 0;
-top : 100px
-`
-const Usernamescontainerp = styled.div`
-    margin: 5px 0;
-    font-size: 16px;
-    color: #333;
-
-    &:hover {
-        background-color: red;
-        cursor: pointer;
-    }
-`;

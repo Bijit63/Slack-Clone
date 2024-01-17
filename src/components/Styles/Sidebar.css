@@ -1,0 +1,85 @@
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+.container-sidebar {
+    background: #3F0E40;
+}
+
+.workspace-container-sidebar {
+    color: white;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    padding-left: 19px;
+    justify-content: space-between;
+    border-bottom: 1px solid #532753;
+}
+
+.name-sidebar {
+    /* Add your name styles here */
+}
+
+.new-message-sidebar {
+    width: 36px;
+    height: 36px;
+    background: white;
+    color: #3F0E40;
+    fill: #3F0E40;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.main-channels-sidebar {
+    padding-top: 20px;
+}
+
+.main-channel-item-sidebar {
+    color: rgb(188, 171, 188);
+    display: grid;
+    grid-template-columns: 15% auto;
+    height: 28px;
+    align-items: center;
+    padding-left: 19px;
+    cursor: pointer;
+    text-align: start;
+}
+
+.main-channel-item-sidebar:hover {
+    background: #350D36;
+}
+
+.channels-container-sidebar {
+    color: rgb(188, 171, 188);
+    margin-top: 10px;
+}
+
+.new-channel-container-sidebar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 28px;
+    padding-left: 19px;
+    padding-right: 12px;
+}
+
+.channels-list-sidebar {
+    /* Add your channels list styles here */
+}
+
+.channel-sidebar {
+    height: 28px;
+    display: flex;
+    align-items: center;
+    padding-left: 19px;
+    cursor: pointer;
+}
+
+.channel-sidebar:hover {
+    background: #350D36;
+}

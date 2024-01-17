@@ -6,6 +6,7 @@ import ChatMessage from './ChatMessage'
 import db from '../firebase'
 import { useParams } from 'react-router-dom'
 import firebase from 'firebase/compat/app';
+import './Styles/PersonalChat.css'
 
 const PersonalChat = ({user}) => {
 
@@ -58,24 +59,19 @@ useEffect(()=>{
 
     
   return (
-    <Container>
-            <Header>
-                <Channel>
-                    <ChannelName>
-                        {/* You are in Channel  - { channel && channel.name} */}
-                    </ChannelName>
-                    <ChannelInfo>
-                    Personal Chat
-                    </ChannelInfo>
-                </Channel>
-                <ChannelDetails>
-                    <div>
-                        Details
-                    </div>
-                    <Info />
-                </ChannelDetails>
-            </Header>
-            <MessageContainer>
+    <div class="container-pchat">
+    <div class="header">
+        <div class="pchannel">
+            <div class="pchannel-name">
+                {/* You are in Channel - { channel && channel.name} */}
+            </div>
+            <div class="pchannel-info">
+                Personal Chat
+            </div>
+        </div>
+        </div>
+
+           <div class="pmessage-container">
                 {
                     messages.length > 0 &&
                     messages.map((data, index)=>(
@@ -88,55 +84,12 @@ useEffect(()=>{
                         />
                     ))
                 }
-            </MessageContainer>
+            </div>
             <ChatInput sendMessage={sendMessage} />
-        </Container>
+            </div>
   )
 }
 
 export default PersonalChat;
 
 
-const Container = styled.div`
-    display: grid;
-    grid-template-rows: 64px auto min-content;
-    min-height: 0;
-`
-
-const Channel = styled.div``
-
-const ChannelDetails = styled.div`
-    display: flex;
-    align-items: center;
-    color: #606060;
-`
-
-const ChannelName = styled.div`
-    font-weight: 700;
-`
-
-const ChannelInfo = styled.div`
-    font-weight: 400;
-    color: #606060;
-    font-size: 13px;
-    margin-top: 8px;
-`
-
-const Info = styled(BsInfoCircle)`
-    margin-left: 10px;
-`
-
-const Header = styled.div`
-    padding-left: 20px;
-    padding-right: 20px;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid rgba(83, 39, 83,.13);
-    justify-content: space-between;
-`
-
-const MessageContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    overflow-y: scroll;
-`
