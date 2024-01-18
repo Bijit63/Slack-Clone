@@ -1,9 +1,15 @@
-    import React from 'react'
+    import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { auth, provider } from '../firebase'
 import db from '../firebase';
+import { Context } from '../Context/NoteContext';
 
 function Login(props) {
+
+  const context = useContext(Context)
+  
+  const {setUser} = context
+
 
     const signIn = () => {
         auth.signInWithPopup(provider)
@@ -23,7 +29,7 @@ function Login(props) {
                 userRef.set(newUser)
                   .then(() => {
                     localStorage.setItem('user', JSON.stringify(newUser));
-                    props.setUser(newUser);
+                    setUser(newUser);
                     console.log('New user added to userlists collection:', newUser);
                   })
                   .catch((error) => {
@@ -33,7 +39,7 @@ function Login(props) {
                 // User already exists in the collection
                 const existingUser = docSnapshot.data();
                 localStorage.setItem('user', JSON.stringify(existingUser));
-                props.setUser(existingUser);
+                setUser(existingUser);
                 console.log('User already exists:', existingUser);
               }
             }).catch((error) => {

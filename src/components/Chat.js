@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { BsInfoCircle } from 'react-icons/bs';
 import ChatInput from './ChatInput'
@@ -11,9 +11,13 @@ import './Styles/Chat.css'
 import { MdMoreHoriz } from 'react-icons/md';
 import { IoMdMore } from 'react-icons/io';
 import ChatSideBar from './ChatSideBar';
+import { Context } from '../Context/NoteContext';
 
 
 function Chat({ user }) {
+
+  const context = useContext(Context)
+  const {alert } = context;
 
   const navigate = useNavigate()
   
@@ -43,6 +47,9 @@ function Chat({ user }) {
     });
     navigate('/')
 
+  }
+  else{
+    alert('warning',"You don't have the access to delete this Channel")
   }
   }
     
@@ -346,7 +353,7 @@ function Chat({ user }) {
             </div>
             <ChatInput sendMessage={sendMessage} />
 
-            <ChatSideBar translateX={translateX} existingusers={existingusers} setexistingusers={setexistingusers}
+            <ChatSideBar Owner={Owner} translateX={translateX} existingusers={existingusers} setexistingusers={setexistingusers}
             setnewusers={setnewusers} adduser={adduser} newusers={newusers} setTranslateX={setTranslateX} deletechannel={deletechannel} />
             </div>
 

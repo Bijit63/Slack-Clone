@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './Styles/UserList.css'
 import { MdMoreHoriz } from "react-icons/md";
 import db from '../firebase';
+import { Context } from '../Context/NoteContext';
 
-const UserList = ({userlists , setUserLists}) => {
+const UserList = () => {
 
-
+    const context = useContext(Context)
+    const {userlists , setUserLists} = context
     const handleRoleChange = async (userId, newRole) => {
         setUserLists((prevUserLists) =>
           prevUserLists.map((user) =>

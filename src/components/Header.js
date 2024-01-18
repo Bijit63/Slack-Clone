@@ -1,9 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { MdAccessTime } from 'react-icons/md';
 import { BsQuestionCircle } from 'react-icons/bs';
+import { Context } from '../Context/NoteContext';
 
-function Header({ user, signOut }) {
+function Header() {
+
+    const context = useContext(Context)
+  
+  const {user,signOut} = context
+
+
     return (
         <Container>
             <Main>

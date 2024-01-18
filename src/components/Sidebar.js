@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
 import { IoIosAddCircleOutline } from 'react-icons/io';
 import { FaPlus } from 'react-icons/fa';
@@ -7,8 +7,16 @@ import db from '../firebase'
 import {  useLocation, useNavigate } from 'react-router-dom'
 import './Styles/Sidebar.css'
 import { BsPeople } from 'react-icons/bs';
+import { Context } from '../Context/NoteContext';
 
 function Sidebar(props) {
+
+    
+
+    const context = useContext(Context);
+
+    const {usersChatRooms,rooms } = context ;
+
 
     const navigate = useNavigate();
     const [ownerID, setownerID] = useState(JSON.parse(localStorage.getItem('user')).uid)
@@ -77,7 +85,7 @@ function Sidebar(props) {
                 </div>
                 <div className="channels-list-sidebar">
                     {
-                        props.rooms.map(item => (
+                        rooms.map(item => (
                             <div className='channel-sidebar' onClick={()=>goToChannel(item.id)}>
                                 # {item.name}
                             </div>
@@ -95,7 +103,7 @@ function Sidebar(props) {
                 </div>
                 <div className="channels-list-sidebar">
                     {
-                        props.usersChatRooms.map(item => (
+                        usersChatRooms.map(item => (
                             <Channel onClick={()=>goToDM(item.roomId)}>
                                 {item.otherUserName}
                             </Channel>

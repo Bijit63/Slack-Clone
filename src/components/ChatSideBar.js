@@ -1,16 +1,22 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './Styles/ChatSideBar.css'
 import { RxCross1 } from "react-icons/rx";
+import { Context } from '../Context/NoteContext';
 
-const ChatSideBar = ({setTranslateX,translateX , deletechannel , existingusers,setexistingusers,setnewusers,newusers,adduser}) => {
+const ChatSideBar = ({setTranslateX,Owner,translateX , deletechannel , existingusers,setexistingusers,setnewusers,newusers,adduser}) => {
 
     const handleTranslateClick = () => {
         setTranslateX(1800); // Adjust the translation amount as needed
       };
 
+      const context = useContext(Context)
+      const {alert} = context
 
 
       const moveUserTomembers = (userId) => {
+        if(Owner)
+        {
+          
         const userToMove = newusers.find(user => user.userId === userId);
       
         if (userToMove) {
@@ -22,6 +28,11 @@ const ChatSideBar = ({setTranslateX,translateX , deletechannel , existingusers,s
           const updatedExistingUsers = [...existingusers, userToMove];
           setexistingusers(updatedExistingUsers);
         }
+      }
+
+      else{
+        alert('warning',"You don't have the access to add Members")
+      }
       };
 
 
