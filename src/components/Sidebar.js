@@ -15,11 +15,11 @@ function Sidebar(props) {
 
     const context = useContext(Context);
 
-    const {usersChatRooms,rooms } = context ;
+    const {usersChatRooms,rooms,user } = context ;
 
 
     const navigate = useNavigate();
-    const [ownerID, setownerID] = useState(JSON.parse(localStorage.getItem('user')).uid)
+    const [ownerID, setownerID] = useState(user.uid)
 
     const goToChannel = (id) => {
         if(id){
@@ -81,7 +81,13 @@ function Sidebar(props) {
                     <div>
                         Channels
                     </div>
-                    <FaPlus onClick={addChannel} />
+                    {
+                        user.role==='admin' ?
+                        <FaPlus onClick={addChannel} /> :
+                        user.role==='manager'?
+                        <FaPlus onClick={addChannel} /> :
+                        ''
+                    }
                 </div>
                 <div className="channels-list-sidebar">
                     {

@@ -13,33 +13,66 @@ import PersonalChat from './components/PersonalChat';
 import UserList from './components/UserList';
 import { NoteContext } from './Context/NoteContext';
 import Alert from './components/Alert';
+import firebase from 'firebase/compat/app';
 
 
 function App() {
 
+
+
   
-  const [ user, setUser ] = useState(JSON.parse(localStorage.getItem('user')));
+  const [cuser, setcUser] = useState({
+    accessToken: "",
+    name: "",
+    photo: "",
+    role: "",
+    uid: ""
+  });
+
+  const getUserDataFromAccessToken = async (accessToken) => {
+    try {
+      const userSnapshot = await db.collection('userlists').where('accessToken', '==', accessToken).get();
+      
+      if (!userSnapshot.empty) {
+        const userData = userSnapshot.docs[0].data()
+        console.log(userData)
+        setcUser(userData)
+      } else {
+        console.log('User not found in userlists collection.');
+      }
+    } catch (error) {
+      console.error('Error checking and logging user data:', error);
+    }
+
+  };
+  
+  useEffect(() => {
+    getUserDataFromAccessToken(localStorage.getItem('accesstoken'))
+    
+  }, [localStorage])
+  
   
 
 
   return (
       <Router>
     <NoteContext>
+      
       <Alert/>
     <div className="App">
         
-        {!user ? (
-          <Login setUser={setUser} />
+        {!cuser ? (
+          <Login setcUser={setcUser} />
         ) : (
           <Container>
-            <Header  />
+            <Header setcUser={setcUser} cuser={cuser} />
             <Main>
               <Sidebar  />
               <Routes>
                 <Route path="/Users" element={<UserList  />} />
-                <Route path="/room/:channelId" element={<Chat user={user} />} />
+                <Route path="/room/:channelId" element={<Chat user={cuser} />} />
 
-                <Route path="/personalroom/:channelId" element={<PersonalChat user={user} />} />
+                <Route path="/personalroom/:channelId" element={<PersonalChat user={cuser} />} />
                 <Route path="/"  />
               </Routes>
             </Main>

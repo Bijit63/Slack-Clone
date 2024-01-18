@@ -4,11 +4,16 @@ import { MdAccessTime } from 'react-icons/md';
 import { BsQuestionCircle } from 'react-icons/bs';
 import { Context } from '../Context/NoteContext';
 
-function Header() {
+function Header({setcUser,cuser}) {
 
     const context = useContext(Context)
   
   const {user,signOut} = context
+
+  const clickedOut = ()=>{
+    setcUser();
+    signOut();
+  }
 
 
     return (
@@ -27,7 +32,7 @@ function Header() {
                 <Name>
                     {user.name}
                 </Name>
-                <UserImage onClick={signOut} >
+                <UserImage onClick={()=>{clickedOut()}} >
                     <img src={user.photo ? user.photo : "https://i.imgur.com/6VBx3io.png" } />
                 </UserImage>
             </UserContainer>

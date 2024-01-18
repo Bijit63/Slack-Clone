@@ -7,13 +7,24 @@ import { Context } from '../Context/NoteContext';
 const UserList = () => {
 
     const context = useContext(Context)
-    const {userlists , setUserLists} = context
+    const {userlists , setUserLists , setUser,user} = context
+
     const handleRoleChange = async (userId, newRole) => {
+
         setUserLists((prevUserLists) =>
           prevUserLists.map((user) =>
             user.userId === userId ? { ...user, role: newRole } : user
           )
         );
+
+        if(user.uid ===userId)
+        {
+          setUser((prevUser) => ({
+            ...prevUser,
+            role: newRole
+          }));
+        }
+
         
 
         try {
@@ -61,7 +72,7 @@ const UserList = () => {
                      className='userrole-dropdown' name="role">
                      <option value="user">User</option>
                      <option value="manager">Manager</option>
-                     <option value="owner">Owner</option>
+                     <option value="admin">Admin</option>
                     </select>
                     </div>
 

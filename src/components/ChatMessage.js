@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import firebase from 'firebase/compat/app';
 import db from '../firebase';
 import './Styles/ChatMessage.css'
+import { Context } from '../Context/NoteContext';
 
 function ChatMessage({ text, name, image, timestamp,uid }) {
-
-
+    
+    const context = useContext(Context)
+    const {user}=context
     const checkOrCreateChatRoom = async (user1ID, user2ID) => {
 
         if(user1ID!==user2ID)
@@ -46,12 +48,12 @@ function ChatMessage({ text, name, image, timestamp,uid }) {
 
 
     return (
-        <div className={`${JSON.parse(localStorage.getItem('user')).uid===uid?'container-ownchatmessage':"container-chatmessage"} `}>
+        <div className={`${user.uid===uid?'container-ownchatmessage':"container-chatmessage"} `}>
         <div className="user-avatar">
-            <img src={image} onClick={()=>{checkOrCreateChatRoom(uid,JSON.parse(localStorage.getItem('user')).uid)}} />
+            <img src={image} onClick={()=>{checkOrCreateChatRoom(uid,user.uid)}} />
         </div>
         <div className="message-content">
-            <span className={`${JSON.parse(localStorage.getItem('user')).uid===uid?'nameown':"name"} `}>
+            <span className={`${user.uid===uid?'nameown':"name"} `}>
                 {name}
                 <span>{new Date(timestamp.toDate()).toUTCString()}</span>
             </span>

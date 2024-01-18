@@ -4,7 +4,7 @@ import { auth, provider } from '../firebase'
 import db from '../firebase';
 import { Context } from '../Context/NoteContext';
 
-function Login(props) {
+function Login({setcUser}) {
 
   const context = useContext(Context)
   
@@ -18,30 +18,49 @@ function Login(props) {
               name: result.user.displayName,
               photo: result.user.photoURL,
               uid: result.user.uid,
-              role:"user"
+              role:"user",
+              accessToken:result.credential.accessToken
             };
+
+            
+            console.log(result)
       
             const userRef = db.collection('userlists').doc(newUser.uid);
       
             userRef.get().then((docSnapshot) => {
               if (!docSnapshot.exists) {
-                // User does not exist in the collection, create a new document
                 userRef.set(newUser)
                   .then(() => {
-                    localStorage.setItem('user', JSON.stringify(newUser));
+                    localStorage.setItem('accesstoken', result.credential.accessToken);
                     setUser(newUser);
+                    setcUser(newUser);
                     console.log('New user added to userlists collection:', newUser);
                   })
                   .catch((error) => {
                     console.error('Error adding new user to userlists collection:', error);
                   });
               } else {
-                // User already exists in the collection
                 const existingUser = docSnapshot.data();
-                localStorage.setItem('user', JSON.stringify(existingUser));
-                setUser(existingUser);
-                console.log('User already exists:', existingUser);
-              }
+                const updatedUser = {
+                  ...existingUser,
+                  name:newUser.name,
+                  photo: newUser.photo,
+                  accessToken: newUser.accessToken
+                };
+
+                userRef.update(updatedUser)
+                .then(() => {
+                  localStorage.setItem('accesstoken', result.credential.accessToken);
+                  setUser(updatedUser);
+                  setcUser(updatedUser);
+                  console.log('User data updated for existing user:', updatedUser);
+                })
+                .catch((error) => {
+                  console.error('Error updating existing user data:', error);
+                });
+            }
+            
+
             }).catch((error) => {
               console.error('Error checking for existing user:', error);
             });
@@ -54,7 +73,7 @@ function Login(props) {
     return (
         <Container>
             <Content>
-                <SlackImg src="http://assets.stickpng.com/images/5cb480cd5f1b6d3fbadece79.png" />
+                <SlackImg src="https://yt3.googleusercontent.com/ytc/AIf8zZQTjGhyv6zCabZQRDnnudwAJ7AoRvnucvEkhi4DSA=s900-c-k-c0x00ffffff-no-rj" />
                 <h1>Sign in Slack</h1>
                 <SignInButton onClick={()=>signIn()}>
                     Sign In With Google

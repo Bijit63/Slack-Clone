@@ -15,8 +15,46 @@ export const NoteContext=(props)=>{
 
     const [rooms, setRooms] = useState([]) 
     const [usersChatRooms, setusersChatRooms] = useState([]) 
-    const [user, setUser ] = useState(JSON.parse(localStorage.getItem('user')));
+    const [user, setUser] = useState({
+      accessToken: "",
+      name: "",
+      photo: "",
+      role: "",
+      uid: ""
+    });
     const [userlists,setUserLists] = useState([])
+
+
+
+
+
+
+
+    // TO GET DATA
+
+    const getUserDataFromAccessToken = async (accessToken) => {
+      try {
+        const userSnapshot = await db.collection('userlists').where('accessToken', '==', accessToken).get();
+        
+        if (!userSnapshot.empty) {
+          const userData = userSnapshot.docs[0].data()
+          setUser(userData)
+        } else {
+          console.log('User not found in userlists collection.');
+        }
+      } catch (error) {
+        console.error('Error checking and logging user data:', error);
+      }
+  
+    };
+    
+    useEffect(() => {
+      getUserDataFromAccessToken(localStorage.getItem('accesstoken'))
+      
+    }, [localStorage])
+
+
+    // TO GET DATA
 
 
 
@@ -132,7 +170,7 @@ export const NoteContext=(props)=>{
     // TO get channels 
     const getChannels = () => {
       db.collection('rooms')
-        .where('members', 'array-contains', JSON.parse(localStorage.getItem('user')).uid)
+        .where('members', 'array-contains', user.uid)
         .onSnapshot((snapshot) => {
           setRooms(snapshot.docs.map((doc) => {
             return { id: doc.id, name: doc.data().name,restricted : doc.data().restricted }
@@ -154,7 +192,9 @@ export const NoteContext=(props)=>{
       if(user)
       {
         getChannels();
-        fetchPersonalChatRooms(JSON.parse(localStorage.getItem('user')).uid);
+
+        fetchPersonalChatRooms(user.uid);
+        
         getuserLists();
       }
     }, [user])

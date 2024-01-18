@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { BsInfoCircle } from 'react-icons/bs';
 import ChatInput from './ChatInput'
@@ -7,8 +7,12 @@ import db from '../firebase'
 import { useParams } from 'react-router-dom'
 import firebase from 'firebase/compat/app';
 import './Styles/PersonalChat.css'
+import { Context } from '../Context/NoteContext';
 
-const PersonalChat = ({user}) => {
+const PersonalChat = ({}) => {
+
+    const context = useContext(Context)
+    const {user} = context
 
     let { channelId } = useParams();
     const [ messages, setMessages ] = useState([])
@@ -37,7 +41,7 @@ const sendMessage = async (text) => {
         timestamp: firebase.firestore.Timestamp.now(),
         user: user.name,
         userImage: user.photo,
-        userID:JSON.parse(localStorage.getItem('user')).uid
+        userID:user.uid
       });
       console.log('Message sent successfully');
     } catch (error) {

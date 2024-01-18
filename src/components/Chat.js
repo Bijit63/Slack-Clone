@@ -14,10 +14,10 @@ import ChatSideBar from './ChatSideBar';
 import { Context } from '../Context/NoteContext';
 
 
-function Chat({ user }) {
+function Chat({  }) {
 
   const context = useContext(Context)
-  const {alert } = context;
+  const {alert,user } = context;
 
   const navigate = useNavigate()
   
@@ -41,6 +41,7 @@ function Chat({ user }) {
     roomRef.delete()
     .then(() => {
       console.log(`Room ${channelId} deleted successfully`);
+      alert('danger','Channel deleted')
     })
     .catch((error) => {
       console.error('Error deleting room:', error);
@@ -81,7 +82,7 @@ function Chat({ user }) {
                 timestamp: firebase.firestore.Timestamp.now(),
                 user: user.name,
                 userImage: user.photo,
-                userID:JSON.parse(localStorage.getItem('user')).uid
+                userID:user.uid
             }
             db.collection("rooms").doc(channelId).collection('messages').add(payload);
         }
@@ -98,7 +99,7 @@ function Chat({ user }) {
     
 
     useEffect(()=>{
-        checkIfUserIsOwner(channelId, JSON.parse(localStorage.getItem('user')).uid)
+        checkIfUserIsOwner(channelId, user.uid)
         getChannel();
         getMessages();
     }, [channelId])
