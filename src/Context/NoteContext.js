@@ -160,7 +160,7 @@ export const NoteContext=(props)=>{
         }
         
         setusersChatRooms(personalChatRooms)
-        console.log('Personal Chat Rooms:', personalChatRooms);
+        // console.log('Personal Chat Rooms:', personalChatRooms);
       } catch (error) {
         console.error('Error fetching personal chat rooms:', error);
         return [];
@@ -225,7 +225,7 @@ export const NoteContext=(props)=>{
     
   
     return(
-        <Context.Provider value={{setUser,user,signOut,usersChatRooms,admin,rooms,setUserLists,userlists ,
+        <Context.Provider value={{setUser,user,signOut,usersChatRooms,setusersChatRooms,admin,rooms,setUserLists,userlists ,
           setShowAlert,alert,showAlert,alertmessage,alerttype 
           
           }} >

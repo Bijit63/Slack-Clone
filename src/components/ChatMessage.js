@@ -9,13 +9,13 @@ import { useNavigate } from 'react-router-dom';
 function ChatMessage({ text, name, image, timestamp,uid,messageId,PersonalChat }) {
     
     const context = useContext(Context)
-    const {user}=context
+    const {user,usersChatRooms,setusersChatRooms}=context
     const navigate = useNavigate()
 
     const [activemessageID, setactivemessageID] = useState()
 
     
-    const checkOrCreateChatRoom = async (user1ID, user2ID) => {
+    const checkOrCreateChatRoom = async (user1ID, user2ID,name,image) => {
 
 
         if((user1ID!==user2ID) && (user.role==='admin' || user.role==='manager'))
@@ -23,6 +23,8 @@ function ChatMessage({ text, name, image, timestamp,uid,messageId,PersonalChat }
             
         const users = [user1ID, user2ID];
         users.sort();
+        
+        
   
         try {
           const roomQuery = await db
@@ -40,6 +42,15 @@ function ChatMessage({ text, name, image, timestamp,uid,messageId,PersonalChat }
               users,
               createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
+
+            const newUser = {
+              otherUserID: user1ID,
+              otherUserName: name,
+              otherUserPhoto: image,
+              roomId: newRoomRef.id
+            };
+        
+            setusersChatRooms([...usersChatRooms, newUser]);
             
             navigate(`/personalroom/${newRoomRef.id}`)
           }
@@ -68,7 +79,7 @@ function ChatMessage({ text, name, image, timestamp,uid,messageId,PersonalChat }
         <div className="user-avatar" onMouseEnter={()=>{mouseenter()}} onMouseLeave={()=>{mouseexit()}} >
             <img src={image}  />
 
-            <div onClick={()=>{checkOrCreateChatRoom(uid,user.uid)}} className={`${uid!==user.uid?activemessageID===messageId?PersonalChat!==true?"gotochat":"gotochathide":"gotochathide":"gotochathide"} `}>
+            <div onClick={()=>{checkOrCreateChatRoom(uid,user.uid,name,image)}} className={`${uid!==user.uid?activemessageID===messageId?PersonalChat!==true?"gotochat":"gotochathide":"gotochathide":"gotochathide"} `}>
               Go to Chat
             </div>
         </div>

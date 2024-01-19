@@ -28,6 +28,19 @@ body {
     color: #606060;
     font-size: 13px;
     margin-top: 8px;
+    display: flex;
+    align-items: center;
+}
+.pchannel-info img{
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+
+}
+.pchannel-info p{
+    font-size: 15px;
+    font-weight: 600;
+    margin-left: 10px;
 }
 
 .pinfo {

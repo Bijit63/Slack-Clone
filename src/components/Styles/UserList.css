@@ -16,10 +16,10 @@
     color: white;
 }
 .userinfo-header-name{
-    width: 45%;
+    width: 40%;
 }
 .userinfo-header-role{
-    width: 45%;
+    width: 40%;
 }
 
 
@@ -29,10 +29,10 @@
 }
 
 .username{
-    width: 45%;
+    width: 40%;
 }
 .userrole{
-    width: 45%;
+    width: 40%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -40,6 +40,16 @@
 .userrole-dropdown{
     height: fit-content;
 }
-.more{
+.DM{
     cursor: pointer;
+    font-size: 13.4px;
+    font-weight: 600;
+    color: white;
+    background-color: rgb(87, 86, 86);
+    padding: 3px 6px;
+    border-radius: 6%;
+}
+.DM:hover{
+    background-color: rgb(59, 59, 59);
+    box-shadow: 0px 0px 3px gray;
 }

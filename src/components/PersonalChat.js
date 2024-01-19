@@ -16,6 +16,7 @@ const PersonalChat = ({}) => {
 
     let { channelId } = useParams();
     const [ messages, setMessages ] = useState([])
+    const [ channel, setchannel ] = useState({})
 
 
 
@@ -51,10 +52,33 @@ const sendMessage = async (text) => {
   
 
  
+  const getChannel = () => {
+    db.collection('personalMessages')
+    .doc(channelId)
+    .onSnapshot((snapshot)=>{
+        const filteredIds = snapshot.data().users.filter(userId => userId !== user.uid);
+       
 
+      db.collection('userlists').doc(filteredIds[0])
+    .get()
+    .then((userSnapshot) => {
+      if (userSnapshot.exists) {
+        const userData = userSnapshot.data();
+        setchannel(userData);
+      
+      } else {
+        console.log('User not found');
+        return null;
+      }
+    })
+        
+      })
+      
+}
 
 
 useEffect(()=>{ 
+    getChannel();
     getMessages();
 }, [channelId])
 
@@ -70,7 +94,8 @@ useEffect(()=>{
                 {/* You are in Channel - { channel && channel.name} */}
             </div>
             <div class="pchannel-info">
-                Personal Chat
+                <img src={channel.photo} alt="" />
+                <p>{channel.name}</p>
             </div>
         </div>
         </div>
