@@ -4,7 +4,7 @@ import { MdSend } from 'react-icons/md';
 import './Styles/ChatInput.css'
 import { Context } from '../Context/NoteContext';
 
-function ChatInput({ sendMessage,Restricted }) {
+function ChatInput({ sendMessage,Restricted,PersonalChat }) {
     const context = useContext(Context)
     const {user}=context;
     const [input, setInput] = useState("");
@@ -20,9 +20,9 @@ function ChatInput({ sendMessage,Restricted }) {
 
 
     return (
-        <div class={`${(user.role==='admin' || user.role==='manager') || Restricted===false ?'container-chatinput':''}`}>
+        <div class={`${(user.role==='admin' || user.role==='manager') || PersonalChat===true  ?'container-chatinput':''}`}>
             {
-                (user.role==='admin' || user.role==='manager') || Restricted===false ?
+                (user.role==='admin' || user.role==='manager') || PersonalChat===true  ?
         <div class="input-container">
             <form>
                     <input 

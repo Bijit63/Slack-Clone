@@ -115,7 +115,7 @@ useEffect(()=>{
                     ))
                 }
             </div>
-            <ChatInput sendMessage={sendMessage} />
+            <ChatInput sendMessage={sendMessage} PersonalChat={true} />
             </div>
   )
 }
