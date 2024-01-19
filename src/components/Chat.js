@@ -17,7 +17,7 @@ import { Context } from '../Context/NoteContext';
 function Chat({  }) {
 
   const context = useContext(Context)
-  const {alert,user } = context;
+  const {alert,user,rooms } = context;
 
   const navigate = useNavigate()
   
@@ -25,16 +25,16 @@ function Chat({  }) {
   let { channelId } = useParams();
   const [ channel, setChannel ] = useState();
   const [ messages, setMessages ] = useState([])
-  const [ Owner, setOwner ] = useState(false)
   const [ Manager, setManager ] = useState(false)
 
   const [ newusers, setnewusers ] = useState([])
   const [ existingusers, setexistingusers ] = useState([])
+  const [ Restricted, setRestricted ] = useState(true)
   
 
 
   const deletechannel = async ()=>{
-    if(Owner)
+    if(user.role==='admin' || user.role==='manager')
     {
       
     const roomRef = db.collection('rooms').doc(channelId);
@@ -63,16 +63,19 @@ function Chat({  }) {
 
     
 
-    const getMessages = () => {
-        db.collection('rooms')
+  const getMessages = () => {
+    db.collection('rooms')
         .doc(channelId)
         .collection('messages')
         .orderBy('timestamp', 'asc')
-        .onSnapshot((snapshot)=>{
-            let messages = snapshot.docs.map((doc)=>doc.data());
+        .onSnapshot((snapshot) => {
+            let messages = snapshot.docs.map((doc) => ({
+                id: doc.id, // Get the document ID
+                ...doc.data() // Get the document data
+            }));
             setMessages(messages);
-        })
-    }
+        });
+};
 
 
     const sendMessage = (text) => {
@@ -93,13 +96,20 @@ function Chat({  }) {
         .doc(channelId)
         .onSnapshot((snapshot)=>{
             setChannel(snapshot.data());
-        })
+            // findRestriction(snapshot.data().members)
+            // console.log("snapshot.data()",snapshot.data())
+          })
+          
     }
+
+//     const findRestriction = (members) => {
+//   const targetUser = members.find(userr => userr.userid === (user && user.uid));
+//   console.log('targetUser', targetUser);
+// };
 
     
 
     useEffect(()=>{
-        checkIfUserIsOwner(channelId, user.uid)
         getChannel();
         getMessages();
     }, [channelId])
@@ -112,23 +122,26 @@ function Chat({  }) {
                 const roomSnapshot = await db.collection('rooms').doc(channelId).get();
 
                 const roomData = roomSnapshot.data();
+                
                 const existingMembers = roomData.members || [];
-                console.log(existingMembers)
+                // console.log('existingMembers',existingMembers)
                 
                 const usersSnapshot = await db.collection('userlists').get();
                 
                 const newusersData = [];
                 const existingusersData = [];
                 usersSnapshot.forEach((doc) => {
+
                   const userId = doc.id;
                   const username = doc.data().name;
                   const image = doc.data().photo; 
-                  const role = doc.data().role; 
+                  const role = doc.data().role;
                                 
-                  
-                  if (!existingMembers.includes(userId)) {
+                  const targetUser = existingMembers.find(user => user.userid === userId);
+               
+                  if (!targetUser) {
                     const userData = {
-                      userId: userId,
+                      uid: userId,
                       username: username,
                       image:image,
                       role:role
@@ -136,19 +149,19 @@ function Chat({  }) {
                     newusersData.push(userData);
                   }
                   else{
-
+                    // console.log('targetUser',targetUser.isRestricted)
                     const userData = {
-                      userId: userId,
+                      uid: userId,
                       username: username,
                       image:image,
-                      role:role
+                      role:role,
+                      isRestricted:targetUser.isRestricted
                     };
                     existingusersData.push(userData);
                     
                   }
                 });
                 
-                console.log(newusersData)
               setnewusers(newusersData);
               setexistingusers(existingusersData);
               
@@ -165,100 +178,37 @@ function Chat({  }) {
 
 
 
-    // to check if it is owner 
-    const checkIfUserIsOwner = async (roomId, userId) => {
-        try {
-          const roomSnapshot = await db.collection('rooms').doc(roomId).get();
+
+
+
+
+
+
+
+
+    const adduser = ( newMemberId,role) => {
+      const roomRef = db.collection('rooms').doc(channelId);
+      const restricted = role==='admin' || role === 'manager'
       
-          if (roomSnapshot.exists) {
-            const roomData = roomSnapshot.data();
-            const owner = roomData.owner;
-            const existingManagers = roomData.managers || [];
-
-            if(owner ===userId)
-            {
-                setOwner(true)
-
-                if (existingManagers.includes(userId)) {
-                    
-                    setManager(true)
-                  }
-                
-            }
-            else{
-                setOwner(false)
-                
-                if (existingManagers.includes(userId)) {
-                    
-                    setManager(false)
-                  }
-                
-
-            }
-          } else {
-            console.log('Room not found');
-            setOwner(false)
-          }
-        } catch (error) {
-          console.error('Error checking if user is owner:', error);
-          return false;
-        }
-      };
-
-    // to check if it is owner 
+      roomRef.update({
+        members: firebase.firestore.FieldValue.arrayUnion({
+          userid: newMemberId,
+          isRestricted: !restricted
+        })
+      })
+      .then(() => {
+        console.log(`New member ${newMemberId} added to room ${channelId}`);
+      })
+      .catch((error) => {
+        console.error('Error adding new member to room:', error);
+      });
+    };
+    
 
 
 
 
-
-
-
-
-    const adduser = (userID)  =>{
-        
-
-            if (Owner) {
-                const roomRef = db.collection('rooms').doc(channelId);
-                
-    roomRef.update({
-      members: firebase.firestore.FieldValue.arrayUnion(userID)
-    })
-    .then(() => {
-      console.log(`User ${userID} added to room ${channelId}`);
-    })
-    .catch((error) => {
-      console.error('Error adding user to room:', error);
-    });
-
-            } else {
-              console.log('User is not the owner of the room');
-            }
-    }
-
-
-
-
-    // TO REMOVE THE USER 
-
-    const removeUser = (channelId, userId) => {
-        const roomRef = db.collection('rooms').doc(channelId);
-      
-        if (Owner) {
-          roomRef.update({
-            members: firebase.firestore.FieldValue.arrayRemove(userId)
-          })
-          .then(() => {
-            console.log(`User ${userId} removed from room ${channelId}`);
-          })
-          .catch((error) => {
-            console.error('Error removing user from room:', error);
-          });
-        } else {
-          console.log('User is not the owner of the room');
-        }
-      };
-
-    // TO REMOVE THE USER 
+   
 
 
 
@@ -267,7 +217,7 @@ function Chat({  }) {
     
     const addmanager = (userID)  =>{
 
-            if (Owner) {
+            if (user.role==='admin' || user.role==='manager') {
                 const roomRef = db.collection('rooms').doc(channelId);
                 
     roomRef.update({
@@ -296,7 +246,7 @@ function Chat({  }) {
     const removeManager = (channelId, userId) => {
         const roomRef = db.collection('rooms').doc(channelId);
       
-        if (Owner) {
+        if (user.role==='admin' || user.role==='manager') {
           roomRef.update({
             managers: firebase.firestore.FieldValue.arrayRemove(userId)
           })
@@ -343,18 +293,23 @@ function Chat({  }) {
                     messages.length > 0 &&
                     messages.map((data, index)=>(
                         <ChatMessage
+                            key={data.id}
                             uid={data.userID}
                             text={data.text}
                             name={data.user}
                             image={data.userImage}
                             timestamp={data.timestamp}
+                            messageId={data.id}
                         />
                     ))
                 }
             </div>
-            <ChatInput sendMessage={sendMessage} />
+            <ChatInput sendMessage={sendMessage} 
+            Restricted={false} 
+            // Restricted={Restricted} 
+            />
 
-            <ChatSideBar Owner={Owner} translateX={translateX} existingusers={existingusers} setexistingusers={setexistingusers}
+            <ChatSideBar channelId={channelId} translateX={translateX} existingusers={existingusers} setexistingusers={setexistingusers}
             setnewusers={setnewusers} adduser={adduser} newusers={newusers} setTranslateX={setTranslateX} deletechannel={deletechannel} />
             </div>
 

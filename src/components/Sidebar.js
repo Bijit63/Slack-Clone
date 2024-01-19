@@ -15,12 +15,11 @@ function Sidebar(props) {
 
     const context = useContext(Context);
 
-    const {usersChatRooms,rooms,user } = context ;
+    const {usersChatRooms,rooms,user,admin } = context ;
 
 
     const navigate = useNavigate();
-    const [ownerID, setownerID] = useState(user.uid)
-
+    
     const goToChannel = (id) => {
         if(id){
             console.log(id);
@@ -40,15 +39,39 @@ function Sidebar(props) {
 
     const addChannel = () => {
         const promptName = prompt("Enter channel name");
-        if(promptName){
-            db.collection('rooms').add({
-                name: promptName,
-                restricted : true,
-                owner : ownerID,
-                members:[ownerID],
-                managers : [ownerID]
+        if (promptName) {
+
+            if(admin.userId===user.uid)
+            {db.collection('rooms').add({
+              name: promptName,
+              Creater: user.uid,
+              members: [
+                {
+                  userid: user.uid,
+                  isRestricted: false
+                }
+              ]
             })
         }
+            else{
+                db.collection('rooms').add({
+                name: promptName,
+                Creater: user.uid,
+                members: [
+                  {
+                    userid: user.uid,
+                    isRestricted: false
+                  },
+                  {
+                    userid: admin.userId,
+                    isRestricted: false
+                  }
+                ]
+              })
+
+            }
+            
+          }
     }
 
     return (

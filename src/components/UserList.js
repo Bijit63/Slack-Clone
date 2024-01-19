@@ -57,22 +57,23 @@ const UserList = () => {
         <div className='userinfo-header-role'>Role</div>
         </div>
 
-        {userlists.map((user)=>{ 
+        {userlists.map((userdata)=>{ 
 
-            let userrole = user.role
             
             return (
                 <div className='userinfo'>
                     
-                    <p className='username'>{user.username}</p>
+                    <p className='username'>{userdata.username}</p>
                     {/* <p className='userrole'>{user.role}</p> */}
                     <div className="userrole">
-                    <select id="role" value={user.role} 
-                    onChange={(e) => handleRoleChange(user.userId, e.target.value)}
+                    <select id="role" value={userdata.role} 
+                    disabled={user.role!=='admin'}
+                    onChange={(e) => handleRoleChange(userdata.userId, e.target.value)}
                      className='userrole-dropdown' name="role">
-                     <option value="user">User</option>
-                     <option value="manager">Manager</option>
+
                      <option value="admin">Admin</option>
+                     <option value="manager">Manager</option>
+                     <option value="user">User</option>
                     </select>
                     </div>
 

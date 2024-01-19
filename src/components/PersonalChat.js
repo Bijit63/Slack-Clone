@@ -85,6 +85,7 @@ useEffect(()=>{
                             name={data.user}
                             image={data.userImage}
                             timestamp={data.timestamp}
+                            PersonalChat={true}
                         />
                     ))
                 }

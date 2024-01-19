@@ -10,10 +10,11 @@ export const Context=createContext();
 
 
 export const NoteContext=(props)=>{
-
-   
+  
+  
 
     const [rooms, setRooms] = useState([]) 
+    const [admin, setadmin] = useState({}) 
     const [usersChatRooms, setusersChatRooms] = useState([]) 
     const [user, setUser] = useState({
       accessToken: "",
@@ -22,6 +23,7 @@ export const NoteContext=(props)=>{
       role: "",
       uid: ""
     });
+
     const [userlists,setUserLists] = useState([])
 
 
@@ -108,7 +110,11 @@ export const NoteContext=(props)=>{
         });
     
         console.log('User Lists:', userListsData);
+        const adminUsers = userListsData.filter(user => user.role === 'admin');
+        setadmin(adminUsers[0])
         setUserLists(userListsData)
+
+
       } catch (error) {
         console.error('Error fetching user lists:', error);
         return [];
@@ -121,6 +127,7 @@ export const NoteContext=(props)=>{
   
   
   
+
     // to get all personal message rooms 
   
     const fetchPersonalChatRooms = async (uid) => {
@@ -152,7 +159,6 @@ export const NoteContext=(props)=>{
           personalChatRooms.push(roomDetails);
         }
         
-        console.log(personalChatRooms)
         setusersChatRooms(personalChatRooms)
         console.log('Personal Chat Rooms:', personalChatRooms);
       } catch (error) {
@@ -169,13 +175,31 @@ export const NoteContext=(props)=>{
     
     // TO get channels 
     const getChannels = () => {
-      db.collection('rooms')
-        .where('members', 'array-contains', user.uid)
-        .onSnapshot((snapshot) => {
-          setRooms(snapshot.docs.map((doc) => {
-            return { id: doc.id, name: doc.data().name,restricted : doc.data().restricted }
-          }))
-        });
+      
+        db.collection('rooms')
+  .onSnapshot((snapshot) => {
+    const userRooms = snapshot.docs
+      .filter(doc => {
+        const members = doc.data().members || [];
+        return members.some(member => member.userid === user.uid);
+      })
+      .map(doc => {
+        const roomData = doc.data();
+        const memberData = (roomData.members || []).find(member => member.userid === user.uid);
+        const isRestricted = memberData ? memberData.isRestricted : false;
+        
+        return {
+          id: doc.id,
+          name: roomData.name,
+          isRestricted: isRestricted
+        };
+      });
+
+      console.log("Chatrooms",userRooms)
+    setRooms(userRooms);
+  });
+
+        
     };
     // TO get channels 
   
@@ -201,7 +225,7 @@ export const NoteContext=(props)=>{
     
   
     return(
-        <Context.Provider value={{setUser,user,signOut,usersChatRooms,rooms,setUserLists,userlists ,
+        <Context.Provider value={{setUser,user,signOut,usersChatRooms,admin,rooms,setUserLists,userlists ,
           setShowAlert,alert,showAlert,alertmessage,alerttype 
           
           }} >

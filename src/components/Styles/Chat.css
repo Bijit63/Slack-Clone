@@ -44,6 +44,7 @@ body {
     align-items: center;
     justify-content: center;
     border-radius: 3px;
+    
 }
 .more-chat-icon{
     font-size: 20px;
@@ -66,6 +67,17 @@ body {
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
+    scrollbar-width: thin; /* For Firefox */
+    scrollbar-color: red; /* Optional: Set the scrollbar color for Firefox */
+
+    /* For WebKit-based browsers like Chrome and Safari */
+    &::-webkit-scrollbar {
+        width: 6px; /* Adjust the width as needed */
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #c3c5c8; /* Optional: Set the thumb color for WebKit browsers */
+    }
 }
 
 .usernames-container {
