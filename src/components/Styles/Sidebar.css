@@ -5,16 +5,18 @@ body {
 
 .container-sidebar {
     background: #3F0E40;
+    height: 93.5vh;
 }
 
 .workspace-container-sidebar {
     color: white;
-    height: 64px;
+    /* height: 64px; */
     display: flex;
     align-items: center;
     padding-left: 19px;
     justify-content: space-between;
     border-bottom: 1px solid #532753;
+    height: 11%;
 }
 
 .name-sidebar {
@@ -66,10 +68,15 @@ body {
     height: 28px;
     padding-left: 19px;
     padding-right: 12px;
+    font-weight: 500;
+    background-color: #2e0b2f;
 }
 
 .channels-list-sidebar {
     /* Add your channels list styles here */
+    display: flex;
+    flex-direction: column;
+
 }
 
 .channel-sidebar {
@@ -82,4 +89,23 @@ body {
 
 .channel-sidebar:hover {
     background: #350D36;
+}
+
+.scroll-sidebar {
+    height: 89%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.scroll-sidebar::-webkit-scrollbar {
+    width: 0px; /* Adjust the width as needed */
+}
+
+.scroll-sidebar::-webkit-scrollbar-thumb {
+    background-color: #888; /* Color of the scrollbar thumb */
+    border-radius: 0px; /* Rounded corners for the thumb */
+}
+
+.scroll-sidebar::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* Color of the scrollbar track */
 }

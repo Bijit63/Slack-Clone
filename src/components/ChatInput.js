@@ -20,9 +20,9 @@ function ChatInput({ sendMessage,Restricted,PersonalChat }) {
 
 
     return (
-        <div class={`${(user.role==='admin' || user.role==='manager') || PersonalChat===true  ?'container-chatinput':''}`}>
+        <div class={`${(user.role==='admin' || user.role==='manager') || (PersonalChat===true || Restricted!==true )  ?'container-chatinput':''}`}>
             {
-                (user.role==='admin' || user.role==='manager') || PersonalChat===true  ?
+                (user.role==='admin' || user.role==='manager') || (PersonalChat===true || Restricted!==true )  ?
         <div class="input-container">
             <form>
                     <input 

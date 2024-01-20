@@ -178,11 +178,11 @@ const ChatSideBar = ({setTranslateX,translateX ,channelId, deletechannel , exist
 
     </div>
     {
-        existingusers.map((member)=>{
+        existingusers.map((member,index)=>{
 
             return (
 
-                <div className='member'>
+                <div key={index} className='member'>
                   <div className="userinfo">
     <img src={member.image} alt='User 1'/>
     <span>{member.username}</span>
@@ -192,12 +192,12 @@ const ChatSideBar = ({setTranslateX,translateX ,channelId, deletechannel , exist
     <TfiMoreAlt/> 
 
     <div className={`${activeuserid===member.uid?'user-permissions':'user-permissions-hide'} `}>
-
+      
       <p onClick={()=>{removeUser(member.uid,member.isRestricted)}}>Remove </p>
-      {/* {member.isRestricted===false?
+      {member.isRestricted===false?
       <p onClick={()=>{ restrictuser(member.uid,member.isRestricted)}}  >Restrict</p>:
       <p onClick={()=>{permituser(member.uid,member.isRestricted) }}  >Permit</p>
-      } */}
+      }
     </div>
     </div>
   </div>
@@ -213,11 +213,11 @@ const ChatSideBar = ({setTranslateX,translateX ,channelId, deletechannel , exist
         Add New Users
     </div>
     {
-        newusers.map((user)=>{
+        newusers.map((user,index)=>{
 
             return (
               
-                <div onClick={()=>{ adduser(user.uid,user.role); moveUserTomembers(user.uid)}} className='member'>
+                <div key={index} onClick={()=>{ adduser(user.uid,user.role); moveUserTomembers(user.uid)}} className='member'>
                   <div className="userinfo">
     <img src={user.image} alt='User 1'/>
     <span>{user.username}</span>

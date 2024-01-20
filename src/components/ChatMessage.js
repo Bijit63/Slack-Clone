@@ -42,15 +42,6 @@ function ChatMessage({ text, name, image, timestamp,uid,messageId,PersonalChat }
               users,
               createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
-
-            const newUser = {
-              otherUserID: user1ID,
-              otherUserName: name,
-              otherUserPhoto: image,
-              roomId: newRoomRef.id
-            };
-        
-            setusersChatRooms([...usersChatRooms, newUser]);
             
             navigate(`/personalroom/${newRoomRef.id}`)
           }

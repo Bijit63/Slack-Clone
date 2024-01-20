@@ -34,21 +34,25 @@ export const NoteContext=(props)=>{
 
     // TO GET DATA
 
-    const getUserDataFromAccessToken = async (accessToken) => {
+    const getUserDataFromAccessToken = (accessToken) => {
       try {
-        const userSnapshot = await db.collection('userlists').where('accessToken', '==', accessToken).get();
-        
-        if (!userSnapshot.empty) {
-          const userData = userSnapshot.docs[0].data()
-          setUser(userData)
-        } else {
-          console.log('User not found in userlists collection.');
-        }
+        // Set up a real-time listener for the user with the given accessToken
+        const unsubscribe = db.collection('userlists')
+          .where('accessToken', '==', accessToken)
+          .onSnapshot((userSnapshot) => {
+            if (!userSnapshot.empty) {
+              const userData = userSnapshot.docs[0].data();
+              setUser(userData);
+            } else {
+              console.log('User not found in userlists collection.');
+            }
+          });
+    
       } catch (error) {
-        console.error('Error checking and logging user data:', error);
+        console.error('Error setting up real-time listener for user data:', error);
       }
-  
     };
+    
     
     useEffect(() => {
       getUserDataFromAccessToken(localStorage.getItem('accesstoken'))
@@ -94,32 +98,36 @@ export const NoteContext=(props)=>{
   
     // to get all the users 
   
-    const getuserLists = async () => {
-      try {
-        const userListsSnapshot = await db.collection('userlists').get();
-    
-        const userListsData = [];
-        userListsSnapshot.forEach((doc) => {
-          const userData = {
-            userId: doc.id,
-            username: doc.data().name,
-            image:doc.data().photo,
-            role:doc.data().role
-          };
-          userListsData.push(userData);
-        });
-    
-        console.log('User Lists:', userListsData);
-        const adminUsers = userListsData.filter(user => user.role === 'admin');
-        setadmin(adminUsers[0])
-        setUserLists(userListsData)
+   const getuserLists = () => {
+  try {
+    // Set up a real-time listener for changes in the 'userlists' collection
+    const unsubscribe = db.collection('userlists').onSnapshot((userListsSnapshot) => {
+      const userListsData = [];
 
+      // Iterate through each document in the 'userlists' collection
+      userListsSnapshot.forEach((doc) => {
+        const userData = {
+          userId: doc.id,
+          username: doc.data().name,
+          image: doc.data().photo,
+          role: doc.data().role
+        };
+        userListsData.push(userData);
+      });
 
-      } catch (error) {
-        console.error('Error fetching user lists:', error);
-        return [];
-      }
-    };
+      const adminUsers = userListsData.filter(user => user.role === 'admin');
+
+      // Set the state with the updated data
+      setadmin(adminUsers[0]);
+      setUserLists(userListsData);
+    });
+    
+  } catch (error) {
+    console.error('Error setting up real-time listener for user lists:', error);
+    return [];
+  }
+};
+
   
     // to get all the users 
   
@@ -130,42 +138,42 @@ export const NoteContext=(props)=>{
 
     // to get all personal message rooms 
   
-    const fetchPersonalChatRooms = async (uid) => {
+    const fetchPersonalChatRooms = (uid) => {
       try {
-        // Fetch personal chat rooms where the user is involved
-        const roomsSnapshot = await db
+        const unsubscribe = db
           .collection('personalMessages')
           .where('users', 'array-contains', uid)
-          .get();
+          .onSnapshot(async (roomsSnapshot) => {
+            const personalChatRooms = [];
     
-        const personalChatRooms = [];
+            for (const roomDoc of roomsSnapshot.docs) {
+              const roomData = roomDoc.data();
+              const otherUserID = roomData.users.find(id => id !== uid);
     
-        for (const roomDoc of roomsSnapshot.docs) {
-          const roomData = roomDoc.data();
-          const otherUserID = roomData.users.find(id => id !== uid);
+              // Fetch other user's information from 'userlists'
+              const otherUserDoc = await db.collection('userlists').doc(otherUserID).get();
+              const otherUserData = otherUserDoc.data();
     
-          // Fetch user information for the other user in the chat
-          const otherUserDoc = await db.collection('userlists').doc(otherUserID).get();
-          const otherUserData = otherUserDoc.data();
+              // Create an object containing room details and other user's information
+              const roomDetails = {
+                roomId: roomDoc.id,
+                otherUserID,
+                otherUserName: otherUserData.name,
+                otherUserPhoto: otherUserData.photo,
+              };
     
-          // Create an object containing room details and other user's information
-          const roomDetails = {
-            roomId: roomDoc.id,
-            otherUserID,
-            otherUserName: otherUserData.name,
-            otherUserPhoto: otherUserData.photo 
-          };
+              personalChatRooms.push(roomDetails);
+            }
     
-          personalChatRooms.push(roomDetails);
-        }
-        
-        setusersChatRooms(personalChatRooms)
-        // console.log('Personal Chat Rooms:', personalChatRooms);
+            // Update state with the latest personal chat rooms
+            setusersChatRooms(personalChatRooms);
+          });
+    
       } catch (error) {
-        console.error('Error fetching personal chat rooms:', error);
-        return [];
+        console.error('Error setting up real-time listener for personal chat rooms:', error);
       }
     };
+    
     // to get all personal message rooms 
   
   
@@ -195,7 +203,7 @@ export const NoteContext=(props)=>{
         };
       });
 
-      console.log("Chatrooms",userRooms)
+      // console.log("Chatrooms",userRooms)
     setRooms(userRooms);
   });
 
@@ -205,7 +213,7 @@ export const NoteContext=(props)=>{
   
     const signOut = () => {
       auth.signOut().then(()=>{
-        console.log(user)
+        // console.log(user)
         localStorage.removeItem('user');
         setUser(null);
       })

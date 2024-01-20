@@ -22,16 +22,15 @@ function Sidebar(props) {
     
     const goToChannel = (id) => {
         if(id){
-            console.log(id);
             navigate(`/room/${id}`)
         }
+
     }
 
 
     const goToDM = (id)=>{
         
         if(id){
-            console.log(id);
             navigate(`/personalroom/${id}`)
         }
     }
@@ -85,12 +84,16 @@ function Sidebar(props) {
                     <IoIosAddCircleOutline  />
                 </div>
             </div>
+
+            <div className='scroll-sidebar' >
+
             <div className="main-channels-sidebar">
                 {
                     sidebarItemsData.map(item => (
-                        <div className='main-channel-item-sidebar'>
+                        <div key={item.text} className='main-channel-item-sidebar'>
                             {item.icon}
                             {item.text}
+                            
                         </div>
                     ))
                 }
@@ -101,9 +104,10 @@ function Sidebar(props) {
             </div>
             <div className="channels-container-sidebar">
                 <div className="new-channel-container-sidebar ">
-                    <div>
+                    <div className='channel-header'>
                         Channels
                     </div>
+
                     {
                         user.role==='admin' ?
                         <FaPlus onClick={addChannel} /> :
@@ -115,8 +119,8 @@ function Sidebar(props) {
                 <div className="channels-list-sidebar">
                     {
                         rooms.map(item => (
-                            <div className='channel-sidebar' onClick={()=>goToChannel(item.id)}>
-                                # {item.name}
+                            <div key={item.id} className='channel-sidebar' onClick={()=>goToChannel(item.id)}>
+                                {item.name}
                             </div>
                         ))
                     }
@@ -139,6 +143,7 @@ function Sidebar(props) {
                         ))
                     }
                 </div>
+            </div>
             </div>
             
         </div>

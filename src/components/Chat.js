@@ -96,82 +96,130 @@ function Chat({  }) {
         .doc(channelId)
         .onSnapshot((snapshot)=>{
             setChannel(snapshot.data());
-            // findRestriction(snapshot.data().members)
-            // console.log("snapshot.data()",snapshot.data())
+
+            // const existingMembers = snapshot.data().members || [];
+
+            // TO GET THE MEMBERS OF THE CHANNEL 
+            fetchUsernamesAndIds(snapshot.data().members)
+            // TO GET THE MEMBERS OF THE CHANNEL 
+
+
+            const targetUser = snapshot.data().members.find(userr => userr.userid === (user && user.uid));
+            if(targetUser)
+            {
+               setRestricted(targetUser.isRestricted)
+            }
           })
           
     }
-
-//     const findRestriction = (members) => {
-//   const targetUser = members.find(userr => userr.userid === (user && user.uid));
-//   console.log('targetUser', targetUser);
-// };
 
     
 
     useEffect(()=>{
         getChannel();
         getMessages();
-    }, [channelId])
+    }, [channelId,user])
 
 
 
-    useEffect(() => {
-        const fetchUsernamesAndIds = async () => {
-            try {
-                const roomSnapshot = await db.collection('rooms').doc(channelId).get();
 
-                const roomData = roomSnapshot.data();
+
+    const fetchUsernamesAndIds = async (members)=>{
+      const existingMembers = members || [];
                 
-                const existingMembers = roomData.members || [];
-                // console.log('existingMembers',existingMembers)
-                
-                const usersSnapshot = await db.collection('userlists').get();
-                
-                const newusersData = [];
-                const existingusersData = [];
-                usersSnapshot.forEach((doc) => {
+      const usersSnapshot = await db.collection('userlists').get();
+      
+      const newusersData = [];
+      const existingusersData = [];
+      usersSnapshot.forEach((doc) => {
 
-                  const userId = doc.id;
-                  const username = doc.data().name;
-                  const image = doc.data().photo; 
-                  const role = doc.data().role;
-                                
-                  const targetUser = existingMembers.find(user => user.userid === userId);
-               
-                  if (!targetUser) {
-                    const userData = {
-                      uid: userId,
-                      username: username,
-                      image:image,
-                      role:role
-                    };
-                    newusersData.push(userData);
-                  }
-                  else{
-                    // console.log('targetUser',targetUser.isRestricted)
-                    const userData = {
-                      uid: userId,
-                      username: username,
-                      image:image,
-                      role:role,
-                      isRestricted:targetUser.isRestricted
-                    };
-                    existingusersData.push(userData);
-                    
-                  }
-                });
-                
-              setnewusers(newusersData);
-              setexistingusers(existingusersData);
-              
-            } catch (error) {
-              console.error('Error fetching usernames and IDs:', error);
-              return [];
-            }
+        const userId = doc.id;
+        const username = doc.data().name;
+        const image = doc.data().photo; 
+        const role = doc.data().role;
+                      
+        const targetUser = existingMembers.find(user => user.userid === userId);
+     
+        if (!targetUser) {
+          const userData = {
+            uid: userId,
+            username: username,
+            image:image,
+            role:role
           };
-          fetchUsernamesAndIds();
-    }, [channelId])
+          newusersData.push(userData);
+        }
+        else{
+          const userData = {
+            uid: userId,
+            username: username,
+            image:image,
+            role:role,
+            isRestricted:targetUser.isRestricted
+          };
+          existingusersData.push(userData);
+          
+        }
+      });
+      
+    setnewusers(newusersData);
+    setexistingusers(existingusersData);
+    }
+
+    // useEffect(() => {
+    //     const fetchUsernamesAndIds = async () => {
+    //         try {
+    //             const roomSnapshot = await db.collection('rooms').doc(channelId).get();
+
+    //             const roomData = roomSnapshot.data();
+                
+    //             const existingMembers = roomData.members || [];
+                
+    //             const usersSnapshot = await db.collection('userlists').get();
+                
+    //             const newusersData = [];
+    //             const existingusersData = [];
+    //             usersSnapshot.forEach((doc) => {
+
+    //               const userId = doc.id;
+    //               const username = doc.data().name;
+    //               const image = doc.data().photo; 
+    //               const role = doc.data().role;
+                                
+    //               const targetUser = existingMembers.find(user => user.userid === userId);
+               
+    //               if (!targetUser) {
+    //                 const userData = {
+    //                   uid: userId,
+    //                   username: username,
+    //                   image:image,
+    //                   role:role
+    //                 };
+    //                 newusersData.push(userData);
+    //               }
+    //               else{
+    //                 const userData = {
+    //                   uid: userId,
+    //                   username: username,
+    //                   image:image,
+    //                   role:role,
+    //                   isRestricted:targetUser.isRestricted
+    //                 };
+    //                 existingusersData.push(userData);
+                    
+    //               }
+    //             });
+                
+    //           setnewusers(newusersData);
+    //           setexistingusers(existingusersData);
+              
+    //         } catch (error) {
+    //           console.error('Error fetching usernames and IDs:', error);
+    //           return [];
+    //         }
+    //       };
+    //       fetchUsernamesAndIds();
+    // }, [channelId,user])
 
 
 
@@ -241,6 +289,8 @@ function Chat({  }) {
 
 
     
+
+    
     // TO REMOVE THE MANAGER 
 
     const removeManager = (channelId, userId) => {
@@ -305,8 +355,7 @@ function Chat({  }) {
                 }
             </div>
             <ChatInput sendMessage={sendMessage} 
-            Restricted={false} 
-            // Restricted={Restricted} 
+            Restricted={Restricted} 
             />
 
             <ChatSideBar channelId={channelId} translateX={translateX} existingusers={existingusers} setexistingusers={setexistingusers}

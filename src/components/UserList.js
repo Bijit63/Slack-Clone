@@ -71,24 +71,14 @@ const UserList = () => {
           .get();
 
         if (!roomQuery.empty) {
-          // Chat room already exists
           const room = roomQuery.docs[0];
           navigate(`/personalroom/${room.id}`)
         } else {
-          // Create a new chat room
+          
           const newRoomRef = await db.collection('personalMessages').add({
             users,
             createdAt: firebase.firestore.FieldValue.serverTimestamp()
           });
-
-          const newUser = {
-            otherUserID: user1ID,
-            otherUserName: name,
-            otherUserPhoto: image,
-            roomId: newRoomRef.id
-          };
-      
-          setusersChatRooms([...usersChatRooms, newUser]);
           
           navigate(`/personalroom/${newRoomRef.id}`)
         }

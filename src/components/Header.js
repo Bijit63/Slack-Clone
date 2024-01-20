@@ -44,6 +44,7 @@ export default Header
 
 
 const Container = styled.div`
+    height : 6.5vh;
     background: #350d36;
     color: white;
     display: flex;

@@ -29,21 +29,24 @@ function App() {
     uid: ""
   });
 
-  const getUserDataFromAccessToken = async (accessToken) => {
-    try {
-      const userSnapshot = await db.collection('userlists').where('accessToken', '==', accessToken).get();
-      
-      if (!userSnapshot.empty) {
-        const userData = userSnapshot.docs[0].data()
-        console.log(userData)
-        setcUser(userData)
-      } else {
-        console.log('User not found in userlists collection.');
-      }
-    } catch (error) {
-      console.error('Error checking and logging user data:', error);
-    }
 
+  const getUserDataFromAccessToken = (accessToken) => {
+    try {
+      // Set up a real-time listener for the user with the given accessToken
+      const unsubscribe = db.collection('userlists')
+        .where('accessToken', '==', accessToken)
+        .onSnapshot((userSnapshot) => {
+          if (!userSnapshot.empty) {
+            const userData = userSnapshot.docs[0].data();
+            setcUser(userData);
+          } else {
+            console.log('User not found in userlists collection.');
+          }
+        });
+  
+    } catch (error) {
+      console.error('Error setting up real-time listener for user data:', error);
+    }
   };
   
   useEffect(() => {
@@ -87,13 +90,15 @@ function App() {
 export default App;
 
 const Container = styled.div`
+  
   width: 100%;
   height: 100vh;
   display: grid;
-  grid-template-rows: 38px minmax(0, 1fr);
+  grid-template-rows: 0px minmax(0, 1fr);
 `
 
 const Main = styled.div`
   display: grid;
+  margin-top:6.5vh;
   grid-template-columns: 260px auto;
 `
