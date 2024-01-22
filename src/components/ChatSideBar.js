@@ -22,25 +22,6 @@ const ChatSideBar = ({setTranslateX,translateX ,channelId, deletechannel , exist
 
 
       const moveUserTomembers = (userId) => {
-        if(user.role==='admin' || user.role==='manager')
-        {
-          
-        const userToMove = newusers.find(user => user.uid === userId);
-      
-        if (userToMove) {
-          const updatedNewUsers = newusers.filter(user => user.uid !== userId);
-          setnewusers(updatedNewUsers);
-      
-          // Add the user to existingusers
-          const updatedExistingUsers = [...existingusers, userToMove];
-          setexistingusers(updatedExistingUsers);
-        }
-
-      }
-
-      else{
-        alert('warning',"You don't have the access to add Members")
-      }
       };
 
 
@@ -59,26 +40,13 @@ const ChatSideBar = ({setTranslateX,translateX ,channelId, deletechannel , exist
 
        // TO REMOVE THE USER 
 
-    const removeUser = (userId,Restricted) => {
-
-
-      const userToMove = existingusers.find(user => user.uid === userId);
-      
-        if (userToMove) {
-          const updatedexistingUsers = existingusers.filter(user => user.uid !== userId);
-          setexistingusers(updatedexistingUsers);
-      
-          // Add the user to existingusers
-          const updatednewUsers = [...newusers, userToMove];
-          setnewusers(updatednewUsers);
-        }
-
+    const removeUser = (userId,Restricted,joinTime) => {
 
 
       const roomRef = db.collection('rooms').doc(channelId);
       if (user.role==='admin' || user.role==='manager') {
         roomRef.update({
-          members: firebase.firestore.FieldValue.arrayRemove({ userid: userId,isRestricted:Restricted })
+          members: firebase.firestore.FieldValue.arrayRemove({ userid: userId,isRestricted:Restricted,joinTime:joinTime })
         })
         .then(() => {
           console.log(`User ${userId} removed from group ${channelId}`);
@@ -193,7 +161,7 @@ const ChatSideBar = ({setTranslateX,translateX ,channelId, deletechannel , exist
 
     <div className={`${activeuserid===member.uid?'user-permissions':'user-permissions-hide'} `}>
       
-      <p onClick={()=>{removeUser(member.uid,member.isRestricted)}}>Remove </p>
+      <p onClick={()=>{removeUser(member.uid,member.isRestricted,member.joinTime)}}>Remove </p>
       {member.isRestricted===false?
       <p onClick={()=>{ restrictuser(member.uid,member.isRestricted)}}  >Restrict</p>:
       <p onClick={()=>{permituser(member.uid,member.isRestricted) }}  >Permit</p>

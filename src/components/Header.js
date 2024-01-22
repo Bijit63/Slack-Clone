@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { MdAccessTime } from 'react-icons/md';
 import { BsQuestionCircle } from 'react-icons/bs';
 import { Context } from '../Context/NoteContext';
+import { RiLogoutBoxRLine } from "react-icons/ri";
 
 function Header({setcUser,cuser}) {
 
@@ -32,9 +33,11 @@ function Header({setcUser,cuser}) {
                 <Name>
                     {user.name}
                 </Name>
-                <UserImage onClick={()=>{clickedOut()}} >
+                <UserImage  >
                     <img src={user.photo ? user.photo : "https://i.imgur.com/6VBx3io.png" } />
                 </UserImage>
+
+                <RiLogoutBoxRLine onClick={()=>{clickedOut()}} />
             </UserContainer>
         </Container>
     )
@@ -108,7 +111,7 @@ const UserImage = styled.div`
     border: 2px solid white;
     border-radius: 3px;
     cursor: pointer;
-
+    margin-right:15px;
     img {
         width: 100%;
     }

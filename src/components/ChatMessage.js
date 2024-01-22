@@ -77,7 +77,17 @@ function ChatMessage({ text, name, image, timestamp,uid,messageId,PersonalChat }
         <div className="message-content">
             <span className={`${user.uid===uid?'nameown':"name"} `}>
                 {name}
-                <span>{new Date(timestamp.toDate()).toUTCString()}</span>
+                <span>{new Date(timestamp.toDate()).toLocaleString('en-IN',{
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    // second: 'numeric',
+    // timeZoneName: 'short',
+    // timeZone: 'Asia/Kolkata',
+  })}</span>
             </span>
             <span className="text">
                 {text}

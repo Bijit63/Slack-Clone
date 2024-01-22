@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { auth, provider } from '../firebase'
 import db from '../firebase';
 import { Context } from '../Context/NoteContext';
+import firebase from 'firebase/compat/app';
+import logo from '../Images/UA_Logo.png'
 
 function Login({setcUser}) {
 
@@ -14,16 +16,21 @@ function Login({setcUser}) {
     const signIn = () => {
         auth.signInWithPopup(provider)
           .then((result) => {
+            const currentTimestamp = firebase.firestore.Timestamp.now().toDate();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const joinDate = currentTimestamp.toLocaleDateString('en-IN', options);
+
+
             const newUser = {
               name: result.user.displayName,
               photo: result.user.photoURL,
               uid: result.user.uid,
-              role:"user",
-              accessToken:result.credential.accessToken
+              role:"noaccess",
+              accessToken:result.credential.accessToken,
+              joinDate:joinDate,
+              email:result.user.email
             };
 
-            
-            console.log(result)
       
             const userRef = db.collection('userlists').doc(newUser.uid);
       
@@ -73,8 +80,8 @@ function Login({setcUser}) {
     return (
         <Container>
             <Content>
-                <SlackImg src="https://yt3.googleusercontent.com/ytc/AIf8zZQTjGhyv6zCabZQRDnnudwAJ7AoRvnucvEkhi4DSA=s900-c-k-c0x00ffffff-no-rj" />
-                <h1>Sign in Slack</h1>
+                <SlackImg src={logo} />
+                <h1>Sign in Chat n Task</h1>
                 <SignInButton onClick={()=>signIn()}>
                     Sign In With Google
                 </SignInButton>
@@ -97,14 +104,16 @@ const Container = styled.div`
 `
 
 const Content = styled.div`
+
     background: white;
-    padding: 100px;
+    padding: 100px 40px;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%);
+    box-shadow: 0px 0px 3px black;
+
 `
 
 const SlackImg = styled.img`

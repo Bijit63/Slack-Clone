@@ -110,7 +110,9 @@ export const NoteContext=(props)=>{
           userId: doc.id,
           username: doc.data().name,
           image: doc.data().photo,
-          role: doc.data().role
+          role: doc.data().role,
+          joinDate: doc.data().joinDate,
+          email: doc.data().email
         };
         userListsData.push(userData);
       });

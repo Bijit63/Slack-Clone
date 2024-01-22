@@ -8,6 +8,7 @@ import {  useLocation, useNavigate } from 'react-router-dom'
 import './Styles/Sidebar.css'
 import { BsPeople } from 'react-icons/bs';
 import { Context } from '../Context/NoteContext';
+import firebase from 'firebase/compat/app';
 
 function Sidebar(props) {
 
@@ -39,7 +40,6 @@ function Sidebar(props) {
     const addChannel = () => {
         const promptName = prompt("Enter channel name");
         if (promptName) {
-
             if(admin.userId===user.uid)
             {db.collection('rooms').add({
               name: promptName,
@@ -47,7 +47,8 @@ function Sidebar(props) {
               members: [
                 {
                   userid: user.uid,
-                  isRestricted: false
+                  isRestricted: false,
+                  joinTime:firebase.firestore.Timestamp.now(),
                 }
               ]
             })
@@ -59,11 +60,13 @@ function Sidebar(props) {
                 members: [
                   {
                     userid: user.uid,
-                    isRestricted: false
+                    isRestricted: false,
+                    joinTime:firebase.firestore.Timestamp.now(),
                   },
                   {
                     userid: admin.userId,
-                    isRestricted: false
+                    isRestricted: false,
+                    joinTime:firebase.firestore.Timestamp.now(),
                   }
                 ]
               })
@@ -77,7 +80,7 @@ function Sidebar(props) {
         <div className="container-sidebar">
         <div className="workspace-container-sidebar">
         <div className="name-sidebar">
-                UA-Slack-App
+                Chat n Task
             </div>
 
                 <div className="new-message-sidebar">

@@ -1,11 +1,48 @@
+
 .container-userlist{
-    width: 600px;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    margin-top: 25px;
+    gap: 20px;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 450px;
+    margin: 0pc auto;
+  }
+  
+  .search-box input {
+    border: none;
+    outline: none;
+    flex: 1;
+    padding: 6px;
+    font-size: 14px;
+  }
+  
+  .search-icon {
+    font-size: 18px;
+    color: #555;
+    cursor: pointer;
+  }
+
+.userlist-table{
+    margin: 0px 7vw;
     height: fit-content;
-    margin-top: 20px;
-    margin-left: 20px;
+    /* margin-top: 20px;
+    margin: auto; */
     border: 1px solid black;
     border-radius: 5px;
     text-align: center;
+    
+
 }
 
 .userinfo-header{
@@ -16,10 +53,16 @@
     color: white;
 }
 .userinfo-header-name{
-    width: 40%;
+    width: 26%;
 }
 .userinfo-header-role{
-    width: 40%;
+    width: 17%;
+}
+.userinfo-header-date{
+    width: 20%;
+}
+.userinfo-header-email{
+    width: 31%;
 }
 
 
@@ -29,10 +72,16 @@
 }
 
 .username{
-    width: 40%;
+    width: 26%;
+}
+.email{
+    width: 31%;
+}
+.joindate{
+    width: 20%;
 }
 .userrole{
-    width: 40%;
+    width: 17%;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -36,7 +36,7 @@ function Chat({  }) {
   const deletechannel = async ()=>{
     if(user.role==='admin' || user.role==='manager')
     {
-
+      navigate('/')
     const roomRef = db.collection('rooms').doc(channelId);
     roomRef.delete()
     .then(() => {
@@ -46,7 +46,7 @@ function Chat({  }) {
     .catch((error) => {
       console.error('Error deleting room:', error);
     });
-    navigate('/')
+    
 
   }
   else{
@@ -63,7 +63,7 @@ function Chat({  }) {
 
     
 
-  const getMessages = () => {
+  const getMessages = (userJoinTime) => {
     db.collection('rooms')
         .doc(channelId)
         .collection('messages')
@@ -75,10 +75,14 @@ function Chat({  }) {
             }));
             setMessages(messages);
         });
+  
 };
 
 
     const sendMessage = (text) => {
+      
+
+
         if(channelId){
             let payload = {
                 text: text,
@@ -92,6 +96,8 @@ function Chat({  }) {
     }
 
     const getChannel = () => {
+      
+      if(channelId){
         db.collection('rooms')
         .doc(channelId)
         .onSnapshot((snapshot)=>{
@@ -107,16 +113,17 @@ function Chat({  }) {
             if(targetUser)
             {
                setRestricted(targetUser.isRestricted)
+               
+        getMessages(targetUser.joinTime)
             }
           })
-          
+        }
     }
 
     
 
     useEffect(()=>{
         getChannel();
-        getMessages();
     }, [channelId,user])
 
 
@@ -124,6 +131,7 @@ function Chat({  }) {
 
 
     const fetchUsernamesAndIds = async (members)=>{
+
       const existingMembers = members || [];
                 
       const usersSnapshot = await db.collection('userlists').get();
@@ -154,7 +162,8 @@ function Chat({  }) {
             username: username,
             image:image,
             role:role,
-            isRestricted:targetUser.isRestricted
+            isRestricted:targetUser.isRestricted,
+            joinTime:targetUser.joinTime
           };
           existingusersData.push(userData);
           
@@ -173,13 +182,16 @@ function Chat({  }) {
     const adduser = ( newMemberId,role) => {
       if(user.role==='admin' || user.role==='manager')
         {
+          
+
       const roomRef = db.collection('rooms').doc(channelId);
       const restricted = role==='admin' || role === 'manager'
       
       roomRef.update({
         members: firebase.firestore.FieldValue.arrayUnion({
           userid: newMemberId,
-          isRestricted: !restricted
+          isRestricted: !restricted,
+          joinTime:firebase.firestore.Timestamp.now(),
         })
       })
       .then(() => {
@@ -199,61 +211,7 @@ function Chat({  }) {
 
 
 
-    // TO ADD MANAGERS 
-
     
-    const addmanager = (userID)  =>{
-
-            if (user.role==='admin' || user.role==='manager') {
-                const roomRef = db.collection('rooms').doc(channelId);
-                
-    roomRef.update({
-      managers: firebase.firestore.FieldValue.arrayUnion(userID)
-    })
-    .then(() => {
-      console.log(`User ${userID} added to room ${channelId}`);
-    })
-    .catch((error) => {
-      console.error('Error adding user to room:', error);
-    });
-
-            } else {
-              console.log('User is not the owner of the room');
-            }
-    }
-
-
-    // TO ADD MANAGERS 
-    
-
-
-    
-
-    
-    // TO REMOVE THE MANAGER 
-
-    const removeManager = (channelId, userId) => {
-        const roomRef = db.collection('rooms').doc(channelId);
-      
-        if (user.role==='admin' || user.role==='manager') {
-          roomRef.update({
-            managers: firebase.firestore.FieldValue.arrayRemove(userId)
-          })
-          .then(() => {
-            console.log(`User ${userId} removed from room ${channelId}`);
-          })
-          .catch((error) => {
-            console.error('Error removing user from room:', error);
-          });
-        } else {
-          console.log('User is not the owner of the room');
-        }
-      };
-
-    // TO REMOVE THE MANAGER 
-
-
-
 
     
 
