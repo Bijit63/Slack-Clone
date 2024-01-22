@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { BsInfoCircle } from 'react-icons/bs';
 import ChatInput from './ChatInput'
@@ -15,7 +15,7 @@ import { Context } from '../Context/NoteContext';
 
 
 function Chat({  }) {
-
+  const messageContainerRef = useRef(null);
   const context = useContext(Context)
   const {alert,user,rooms } = context;
 
@@ -64,17 +64,20 @@ function Chat({  }) {
     
 
   const getMessages = (userJoinTime) => {
+
     db.collection('rooms')
-        .doc(channelId)
-        .collection('messages')
-        .orderBy('timestamp', 'asc')
-        .onSnapshot((snapshot) => {
-            let messages = snapshot.docs.map((doc) => ({
-                id: doc.id, // Get the document ID
-                ...doc.data() // Get the document data
-            }));
-            setMessages(messages);
-        });
+    .doc(channelId)
+    .collection('messages')
+    .where('timestamp', '>=', userJoinTime) 
+    .orderBy('timestamp', 'desc')
+    .onSnapshot((snapshot) => {
+      let messages = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      
+      setMessages(messages);
+    });
   
 };
 
@@ -102,29 +105,46 @@ function Chat({  }) {
         .doc(channelId)
         .onSnapshot((snapshot)=>{
             setChannel(snapshot.data());
+            console.log('snapshot.data()',snapshot.data())
+          if(snapshot.data()!==undefined)
+          {
+              fetchUsernamesAndIds(snapshot.data().members)
+            
+              const targetUser = snapshot.data().members.find(userr => userr.userid === (user && user.uid));
+              if(targetUser)
+              {
+                 setRestricted(targetUser.isRestricted)
+          getMessages(targetUser.joinTime)
+              }
+          }
+            
 
 
-            // TO GET THE MEMBERS OF THE CHANNEL 
-            fetchUsernamesAndIds(snapshot.data().members)
-            // TO GET THE MEMBERS OF THE CHANNEL 
-
-
-            const targetUser = snapshot.data().members.find(userr => userr.userid === (user && user.uid));
-            if(targetUser)
-            {
-               setRestricted(targetUser.isRestricted)
-               
-        getMessages(targetUser.joinTime)
-            }
+            
           })
         }
     }
 
+  
     
-
+    
     useEffect(()=>{
         getChannel();
     }, [channelId,user])
+
+
+
+
+    const applyStyles = () => {
+      if (messageContainerRef.current) {
+        messageContainerRef.current.style.flexDirection = 'column-reverse';
+  
+      }
+    };
+
+    useEffect(()=>{
+      applyStyles();
+    }, [messages])
 
 
 
@@ -195,7 +215,6 @@ function Chat({  }) {
         })
       })
       .then(() => {
-        console.log(`New member ${newMemberId} added to room ${channelId}`);
       })
       .catch((error) => {
         console.error('Error adding new member to room:', error);
@@ -235,7 +254,7 @@ function Chat({  }) {
           </div>
      
         </div>
-        <div class="message-container">
+        <div class="message-container" ref={messageContainerRef} >
                 {
                     messages.length > 0 &&
                     messages.map((data, index)=>(
