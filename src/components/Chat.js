@@ -36,7 +36,7 @@ function Chat({  }) {
   const deletechannel = async ()=>{
     if(user.role==='admin' || user.role==='manager')
     {
-      
+
     const roomRef = db.collection('rooms').doc(channelId);
     roomRef.delete()
     .then(() => {
@@ -97,7 +97,6 @@ function Chat({  }) {
         .onSnapshot((snapshot)=>{
             setChannel(snapshot.data());
 
-            // const existingMembers = snapshot.data().members || [];
 
             // TO GET THE MEMBERS OF THE CHANNEL 
             fetchUsernamesAndIds(snapshot.data().members)
@@ -166,75 +165,14 @@ function Chat({  }) {
     setexistingusers(existingusersData);
     }
 
-    // useEffect(() => {
-    //     const fetchUsernamesAndIds = async () => {
-    //         try {
-    //             const roomSnapshot = await db.collection('rooms').doc(channelId).get();
-
-    //             const roomData = roomSnapshot.data();
-                
-    //             const existingMembers = roomData.members || [];
-                
-    //             const usersSnapshot = await db.collection('userlists').get();
-                
-    //             const newusersData = [];
-    //             const existingusersData = [];
-    //             usersSnapshot.forEach((doc) => {
-
-    //               const userId = doc.id;
-    //               const username = doc.data().name;
-    //               const image = doc.data().photo; 
-    //               const role = doc.data().role;
-                                
-    //               const targetUser = existingMembers.find(user => user.userid === userId);
-               
-    //               if (!targetUser) {
-    //                 const userData = {
-    //                   uid: userId,
-    //                   username: username,
-    //                   image:image,
-    //                   role:role
-    //                 };
-    //                 newusersData.push(userData);
-    //               }
-    //               else{
-    //                 const userData = {
-    //                   uid: userId,
-    //                   username: username,
-    //                   image:image,
-    //                   role:role,
-    //                   isRestricted:targetUser.isRestricted
-    //                 };
-    //                 existingusersData.push(userData);
-                    
-    //               }
-    //             });
-                
-    //           setnewusers(newusersData);
-    //           setexistingusers(existingusersData);
-              
-    //         } catch (error) {
-    //           console.error('Error fetching usernames and IDs:', error);
-    //           return [];
-    //         }
-    //       };
-    //       fetchUsernamesAndIds();
-    // }, [channelId,user])
-
-
-
-
-
-
-
-
-
-
+  
 
 
 
 
     const adduser = ( newMemberId,role) => {
+      if(user.role==='admin' || user.role==='manager')
+        {
       const roomRef = db.collection('rooms').doc(channelId);
       const restricted = role==='admin' || role === 'manager'
       
@@ -250,6 +188,7 @@ function Chat({  }) {
       .catch((error) => {
         console.error('Error adding new member to room:', error);
       });
+    }
     };
     
 

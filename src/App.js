@@ -32,7 +32,7 @@ function App() {
 
   const getUserDataFromAccessToken = (accessToken) => {
     try {
-      // Set up a real-time listener for the user with the given accessToken
+      
       const unsubscribe = db.collection('userlists')
         .where('accessToken', '==', accessToken)
         .onSnapshot((userSnapshot) => {
