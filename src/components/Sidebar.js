@@ -9,6 +9,8 @@ import './Styles/Sidebar.css'
 import { BsPeople } from 'react-icons/bs';
 import { Context } from '../Context/NoteContext';
 import firebase from 'firebase/compat/app';
+import { BsGrid1X2Fill } from 'react-icons/bs';
+
 
 function Sidebar(props) {
 
@@ -40,20 +42,18 @@ function Sidebar(props) {
     const addChannel = () => {
         const promptName = prompt("Enter channel name");
         if (promptName) {
-            if(admin.userId===user.uid)
-            {db.collection('rooms').add({
-              name: promptName,
-              Creater: user.uid,
-              members: [
-                {
-                  userid: user.uid,
-                  isRestricted: false,
-                  joinTime:firebase.firestore.Timestamp.now(),
-                }
-              ]
-            })
-        }
-            else{
+
+            const alladmins = []
+
+            admin.forEach(adminData => {
+                alladmins.push({
+                    userid: adminData.userId,
+                    isRestricted: false,
+                    joinTime: firebase.firestore.Timestamp.now(),
+                });
+            });
+
+           
                 db.collection('rooms').add({
                 name: promptName,
                 Creater: user.uid,
@@ -63,15 +63,11 @@ function Sidebar(props) {
                     isRestricted: false,
                     joinTime:firebase.firestore.Timestamp.now(),
                   },
-                  {
-                    userid: admin.userId,
-                    isRestricted: false,
-                    joinTime:firebase.firestore.Timestamp.now(),
-                  }
+                  ...alladmins
                 ]
               })
 
-            }
+            
             
           }
     }
@@ -104,9 +100,17 @@ function Sidebar(props) {
                     <BsPeople/>
                     UserList
                 </div>
+
             </div>
+
+
+
+
+
+            
             <div className="channels-container-sidebar">
                 <div className="new-channel-container-sidebar ">
+                    
                     <div className='channel-header'>
                         Channels
                     </div>
@@ -140,9 +144,9 @@ function Sidebar(props) {
                 <div className="channels-list-sidebar">
                     {
                         usersChatRooms.map(item => (
-                            <Channel onClick={()=>goToDM(item.roomId)}>
+                            <div className='Userchatnames' onClick={()=>goToDM(item.roomId)}>
                                 {item.otherUserName}
-                            </Channel>
+                            </div>
                         ))
                     }
                 </div>
@@ -158,14 +162,5 @@ export default Sidebar
 
 
 
+   
 
-const Channel = styled.div`
-    height: 28px;
-    display: flex;
-    align-items: center;
-    padding-left: 19px;
-    cursor: pointer;
-    :hover {
-        background: #350D36;
-    }
-`

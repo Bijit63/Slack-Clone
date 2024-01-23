@@ -145,7 +145,6 @@ const UserList = () => {
 
         {AllusersData.map((userdata)=>{ 
 
-            {console.log(AllusersData)}
             return (
                 <div className='userinfo'>
                     

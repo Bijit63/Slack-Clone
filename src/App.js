@@ -40,7 +40,7 @@ function App() {
             const userData = userSnapshot.docs[0].data();
             setcUser(userData);
           } else {
-            console.log('User not found in userlists collection.');
+            setcUser(null)
           }
         });
   
@@ -50,6 +50,7 @@ function App() {
   };
   
   useEffect(() => {
+    
     getUserDataFromAccessToken(localStorage.getItem('accesstoken'))
     
   }, [localStorage])

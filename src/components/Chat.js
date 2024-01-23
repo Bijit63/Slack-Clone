@@ -41,7 +41,7 @@ function Chat({  }) {
     roomRef.delete()
     .then(() => {
       console.log(`Room ${channelId} deleted successfully`);
-      alert('danger','Channel deleted')
+      alert('danger','Channel deleted',1200)
     })
     .catch((error) => {
       console.error('Error deleting room:', error);
@@ -50,7 +50,7 @@ function Chat({  }) {
 
   }
   else{
-    alert('warning',"You don't have the access to delete this Channel")
+    alert('warning',"Access Denied",1200)
   }
   }
     

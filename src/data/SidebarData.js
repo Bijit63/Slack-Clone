@@ -6,10 +6,7 @@ export const sidebarItemsData = [
         icon: <BsChat />,
         text: "Thread"
     },
-    {
-        icon: <BsInbox />,
-        text: "All DMs"
-    },
+    
     {
         icon: <BsPencil />,
         text: "Mentions & Reactions"

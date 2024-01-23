@@ -1,0 +1,38 @@
+.header-container{
+    height : 6.5vh;
+    background: #350d36;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 1px 0 0 rgb(255 255 255 / 10%);
+}
+
+.userheader{
+    display: flex;
+    align-items: center;
+    padding-right: 16px;
+    position: absolute;
+    right: 0;
+}
+
+.userheader-name{
+    padding-right: 16px;
+}
+
+.userheader-image{
+    width: 28px;
+    height: 28px;
+    border: 2px solid white;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-right:15px;
+    
+}
+.userheader-image img {
+    width: 100%;
+}
+.logout{
+    cursor: pointer;
+}

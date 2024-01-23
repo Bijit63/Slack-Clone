@@ -28,12 +28,10 @@ const ChatSideBar = ({setTranslateX,translateX ,channelId, deletechannel , exist
 
       const mouseenter = (id)=>{
           setactiveuserid(id)
-          console.log(id)
       }
 
       const mouseleave = (id)=>{
         setactiveuserid()
-        console.log(id,"left")
       }
 
 

@@ -1,7 +1,4 @@
-body {
-    margin: 0;
-    font-family: 'Arial', sans-serif;
-}
+
 
 .container-pchat {
     display: grid;
@@ -60,6 +57,15 @@ body {
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
+
+      /* For WebKit-based browsers like Chrome and Safari */
+      &::-webkit-scrollbar {
+        width: 6px; /* Adjust the width as needed */
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #c3c5c8; /* Optional: Set the thumb color for WebKit browsers */
+    }
 }
 
 .pusernames-container {

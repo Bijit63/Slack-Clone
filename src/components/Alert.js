@@ -5,6 +5,7 @@ import { IoWarning } from 'react-icons/io5';
 import { useContext } from 'react';
 import { Context } from '../Context/NoteContext';
 import './Styles/Alert.css'
+import { AiFillWarning } from "react-icons/ai";
 
 const Alert = () => {
 
@@ -20,29 +21,36 @@ const Alert = () => {
 
 
   return (
-    <div id='alert' className='alert-container' >
+    <div id='alert' className={`${alerttype==='normal'?'alert-normal-container':'alert-container'}`} >
     
-    <div className={`${alerttype==='warning'?'alert-warning':alerttype==='danger'?'alert-danger':'alert-success'}  alert-box `}>
+    <div className={`${alerttype==='warning'?'alert-warning  alert-box ':alerttype==='danger'?'alert-danger alert-box ':alerttype==='success'?'alert-success alert-box ':'alert-normal'} `}>
 
       <div className="alert-text">
 
+    <span className='alert-icon'>
+
     {
-      alerttype==='success'?<FaCheckCircle className={`icon-success`} />:alerttype==='warning'?<RiErrorWarningFill className={`icon-warning`} />:      
-      <RiErrorWarningFill className={`icon-danger`} />
+      alerttype==='success'?<FaCheckCircle className={`icon-success`} />:
+      alerttype==='warning'?<AiFillWarning className={`icon-warning`} />:      
+      alerttype==='danger'?<RiErrorWarningFill className={`icon-danger`} />:      
+      <AiFillWarning className={`icon-danger`} />
     }
+    </span>
         
 
         
-        <span className={`${alerttype==='warning'?'text-warning':alerttype==='danger'?'text-danger':'text-success'}  alert-message `}>{alertmessage}</span>
+        <span className={`${alerttype==='warning'?'text-warning':alerttype==='danger'?'text-danger':alerttype==='success'?'text-success':'text-normal'}  alert-message `}>{alertmessage}</span>
+
       </div>
 
-      <div
+      {/* <div
         onClick={handleDismiss}
-        className="alert-button"
+        className={`${alerttype==='normal'?"hide-button":"alert-button"}`}
       >
         <FaTimes size={20} />
-      </div>
-    </div></div>
+      </div> */}
+    </div>
+    </div>
   )
 }
 

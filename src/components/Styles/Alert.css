@@ -1,36 +1,82 @@
 .alert-container{
-    position: fixed;
-display: flex;
-min-width: 100vw;
-z-index: 40;
-top: 20px;
+  position: fixed;
+  display: flex;
+  min-width: 100vw;
+  z-index: 40;
+  /* top: 20px; */
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
 }
+
+.alert-normal-container{
+  position: fixed;
+  display: flex;
+  min-width: 100vw;
+  z-index: 40;
+  /* top: 20px; */
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(3px);
+
+}
+
+
+
+
+
 
 .alert-box{
     padding: 20px;
 display: flex;
-margin: auto;
-min-width: 60vw;
-max-width: 60vw;
+/* margin: auto; */
+flex-direction: column;
+min-width: 400px;
+max-width: 400px;
+height: 150px;
 align-items: center;
 justify-content: space-between;
 border-radius: 0.375rem; 
-box-shadow: 0px 0px 10px black;
+box-shadow: 0px 0px 6px rgb(50, 50, 50);
+}
+
+.alert-normal{
+  padding: 20px;
+  display: flex;
+  /* margin: auto; */
+  flex-direction: column;
+  min-width: 400px;
+  max-width: 400px;
+  height: 150px;
+  background-color: white;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 0.375rem; 
+  box-shadow: 0px 0px 6px rgb(50, 50, 50);
 }
 
 .alert-text{
     display: flex;
+    margin-top: 15px;
+    flex-direction: column;
 align-items: center;
 }
 
+
 .alert-button{
-    color: #000000c8;
+    color: white;
+    background-color: rgb(74, 74, 74);
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    padding: 4px 0;
+    border-radius: 5px;
+    justify-content: center;
 
-
-&:hover {
-  color: #000;
 }
-
+.hide-button{
+   display: none;
 }
 
 
@@ -50,19 +96,19 @@ align-items: center;
   
 .icon-success {
     color: #2cc16f; /* Adjust color based on Tailwind CSS class */
-    font-size: 19px;
+    font-size: 56px;
     margin-right: 6px;
   }
   
   .icon-warning {
     color: #bd8d2e; /* Adjust color based on Tailwind CSS class */
-    font-size: 21.5px;
+    font-size: 61px;
     margin-right: 6px;
   }
   
   .icon-danger {
     color: #b92c2c; /* Adjust color based on Tailwind CSS class */
-    font-size: 21px;
+    font-size: 61px;
     margin-right: 6px;
   }
 
@@ -70,19 +116,25 @@ align-items: center;
 .text-success {
     color: #01612c; /* Adjust color based on Tailwind CSS class */
     
+    
   }
   
   .text-warning {
     color: #5f3f01; /* Adjust color based on Tailwind CSS class */
+    
+    
    
   }
   
   .text-danger {
     color: #580000; /* Adjust color based on Tailwind CSS class */
+    
 
   }
 
   .alert-message{
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 27px;
+    margin-top: 18px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
   }

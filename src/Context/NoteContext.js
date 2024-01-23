@@ -36,7 +36,7 @@ export const NoteContext=(props)=>{
 
     const getUserDataFromAccessToken = (accessToken) => {
       try {
-        // Set up a real-time listener for the user with the given accessToken
+        
         const unsubscribe = db.collection('userlists')
           .where('accessToken', '==', accessToken)
           .onSnapshot((userSnapshot) => {
@@ -72,8 +72,32 @@ export const NoteContext=(props)=>{
   const [alertmessage, setalertmessage] = useState('')
   const [showAlert, setShowAlert] = useState(false);
 
+  useEffect(() => {
+    if(user && user.role==='noaccess')
+    {
+        setalerttype('normal')
+        setalertmessage('Access Denied')
+        setShowAlert(true);
+    
+    
+        setTimeout(() => {
+          setShowAlert(false);
+          setalerttype('')
+          setalertmessage('')
+        }, 20000000);   
+    
+    }
 
-  const alert=(type,message)=>{
+    else{
+      setShowAlert(false);
+      setalerttype('')
+          setalertmessage('')
+    }
+  }, [user])
+  
+
+
+  const alert=(type,message,time)=>{
 
     setalerttype(type)
     setalertmessage(message)
@@ -84,7 +108,7 @@ export const NoteContext=(props)=>{
       setShowAlert(false);
       setalerttype('')
       setalertmessage('')
-    }, 4000);   
+    }, time);   
 
   }
   
@@ -100,11 +124,10 @@ export const NoteContext=(props)=>{
   
    const getuserLists = () => {
   try {
-    // Set up a real-time listener for changes in the 'userlists' collection
+    
     const unsubscribe = db.collection('userlists').onSnapshot((userListsSnapshot) => {
       const userListsData = [];
 
-      // Iterate through each document in the 'userlists' collection
       userListsSnapshot.forEach((doc) => {
         const userData = {
           userId: doc.id,
@@ -117,10 +140,10 @@ export const NoteContext=(props)=>{
         userListsData.push(userData);
       });
 
-      const adminUsers = userListsData.filter(user => user.role === 'admin');
+      const adminUsers = userListsData.filter(userr => (userr.role === 'admin' && user.uid!=userr.userId));
 
-      // Set the state with the updated data
-      setadmin(adminUsers[0]);
+      setadmin(adminUsers);
+      console.log(adminUsers);
       setUserLists(userListsData);
     });
     
