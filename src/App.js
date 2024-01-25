@@ -7,6 +7,7 @@ import Login from './components/Login'
 import styled from 'styled-components'
 import Header from './components/Header'
 import Sidebar from './components/Sidebar'
+import Task from './components/Task'
 import db from './firebase'
 import { auth, provider } from "./firebase";
 import PersonalChat from './components/PersonalChat';
@@ -14,6 +15,7 @@ import UserList from './components/UserList';
 import { NoteContext } from './Context/NoteContext';
 import Alert from './components/Alert';
 import firebase from 'firebase/compat/app';
+import ChatnTaskLoader from './components/ChatnTaskLoader';
 
 
 function App() {
@@ -62,6 +64,8 @@ function App() {
       <Router>
     <NoteContext>
       
+
+      <ChatnTaskLoader/>
       <Alert/>
     <div className="App">
         
@@ -75,7 +79,7 @@ function App() {
               <Routes>
                 <Route path="/Users" element={<UserList  />} />
                 <Route path="/room/:channelId" element={<Chat user={cuser} />} />
-
+                <Route path="/Task"  element={<Task/>}  />
                 <Route path="/personalroom/:channelId" element={<PersonalChat user={cuser} />} />
                 <Route path="/"  />
               </Routes>

@@ -81,7 +81,7 @@ function Login({setcUser}) {
         <Container>
             <Content>
                 <SlackImg src={logo} />
-                <h1>Sign in Chat n Task</h1>
+                <h1>Chat n Task</h1>
                 <SignInButton onClick={()=>signIn()}>
                     Sign In With Google
                 </SignInButton>
@@ -106,7 +106,7 @@ const Container = styled.div`
 const Content = styled.div`
 
     background: white;
-    padding: 100px 40px;
+    padding: 100px 60px;
     border-radius: 5px;
     display: flex;
     flex-direction: column;

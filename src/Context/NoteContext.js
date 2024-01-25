@@ -11,10 +11,11 @@ export const Context=createContext();
 
 export const NoteContext=(props)=>{
   
+  const [Loader, setLoader] = useState(true) 
   
 
     const [rooms, setRooms] = useState([]) 
-    const [admin, setadmin] = useState({}) 
+    const [admin, setadmin] = useState([]) 
     const [usersChatRooms, setusersChatRooms] = useState([]) 
     const [user, setUser] = useState({
       accessToken: "",
@@ -26,6 +27,9 @@ export const NoteContext=(props)=>{
 
     const [userlists,setUserLists] = useState([])
 
+    const [TaskData, setTaskData] = useState([])
+
+
 
 
 
@@ -35,6 +39,11 @@ export const NoteContext=(props)=>{
     // TO GET DATA
 
     const getUserDataFromAccessToken = (accessToken) => {
+
+      
+      
+
+
       try {
         
         const unsubscribe = db.collection('userlists')
@@ -43,21 +52,24 @@ export const NoteContext=(props)=>{
             if (!userSnapshot.empty) {
               const userData = userSnapshot.docs[0].data();
               setUser(userData);
+              getuserLists(userData);
             } else {
               console.log('User not found in userlists collection.');
+              setLoader(false)
             }
           });
     
       } catch (error) {
         console.error('Error setting up real-time listener for user data:', error);
       }
+      
     };
     
     
     useEffect(() => {
+      // setLoader(true)
       getUserDataFromAccessToken(localStorage.getItem('accesstoken'))
-      
-    }, [localStorage])
+    }, [user])
 
 
     // TO GET DATA
@@ -72,6 +84,7 @@ export const NoteContext=(props)=>{
   const [alertmessage, setalertmessage] = useState('')
   const [showAlert, setShowAlert] = useState(false);
 
+
   useEffect(() => {
     if(user && user.role==='noaccess')
     {
@@ -84,7 +97,7 @@ export const NoteContext=(props)=>{
           setShowAlert(false);
           setalerttype('')
           setalertmessage('')
-        }, 20000000);   
+        }, 200000000);   
     
     }
 
@@ -95,7 +108,6 @@ export const NoteContext=(props)=>{
     }
   }, [user])
   
-
 
   const alert=(type,message,time)=>{
 
@@ -122,7 +134,7 @@ export const NoteContext=(props)=>{
   
     // to get all the users 
   
-   const getuserLists = () => {
+   const getuserLists = (userdata) => {
   try {
     
     const unsubscribe = db.collection('userlists').onSnapshot((userListsSnapshot) => {
@@ -140,12 +152,15 @@ export const NoteContext=(props)=>{
         userListsData.push(userData);
       });
 
-      const adminUsers = userListsData.filter(userr => (userr.role === 'admin' && user.uid!=userr.userId));
+      const adminUsers = userListsData.filter(userr => (userr.role === 'admin' && userdata.uid!=userr.userId));
 
       setadmin(adminUsers);
-      console.log(adminUsers);
       setUserLists(userListsData);
     });
+
+
+    
+    getChannels(userdata);
     
   } catch (error) {
     console.error('Error setting up real-time listener for user lists:', error);
@@ -194,72 +209,103 @@ export const NoteContext=(props)=>{
             setusersChatRooms(personalChatRooms);
           });
     
+                
+                 setTimeout(() => {
+                   setLoader(false)
+                  
+                 }, 1500);
+                
       } catch (error) {
         console.error('Error setting up real-time listener for personal chat rooms:', error);
       }
+
     };
     
     // to get all personal message rooms 
   
   
+
+
+
+
+  
+    // to get all task 
+    const getTasks = () => {
+      db.collection('Task')
+      .where('assigned_to.id', '==', localStorage.getItem("userId"))
+        .onSnapshot((snapshot) => {
+          const tasksData = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          // console.log(tasksData);
+          if (tasksData.length > 0) {
+            setTaskData(tasksData);
+          }
+        });
+    };
+    // to get all task 
   
   
   
     
+    
+    
     // TO get channels 
-    const getChannels = () => {
+    const getChannels = (userdata) => {
       
-        db.collection('rooms')
-  .onSnapshot((snapshot) => {
-    const userRooms = snapshot.docs
-      .filter(doc => {
-        const members = doc.data().members || [];
-        return members.some(member => member.userid === user.uid);
-      })
-      .map(doc => {
-        const roomData = doc.data();
-        const memberData = (roomData.members || []).find(member => member.userid === user.uid);
-        const isRestricted = memberData ? memberData.isRestricted : false;
-        
-        return {
-          id: doc.id,
-          name: roomData.name,
-          isRestricted: isRestricted
-        };
-      });
-
-      // console.log("Chatrooms",userRooms)
-    setRooms(userRooms);
-  });
-
-        
-    };
-    // TO get channels 
-  
-    const signOut = () => {
-      auth.signOut().then(()=>{
-        // console.log(user)
-        localStorage.removeItem('user');
-        setUser(null);
-      })
-    }
-  
-    useEffect(() =>{
+      db.collection('rooms')
+.onSnapshot((snapshot) => {
+  const userRooms = snapshot.docs
+    .filter(doc => {
+      const members = doc.data().members || [];
+      return members.some(member => member.userid === userdata.uid);
+    })
+    .map(doc => {
+      const roomData = doc.data();
+      const memberData = (roomData.members || []).find(member => member.userid === userdata.uid);
+      const isRestricted = memberData ? memberData.isRestricted : false;
       
-      if(user)
-      {
-        getChannels();
+      return {
+        id: doc.id,
+        name: roomData.name,
+        isRestricted: isRestricted
+      };
+    });
 
-        fetchPersonalChatRooms(user.uid);
-        
-        getuserLists();
-      }
-    }, [user])
+    // console.log("Chatrooms",userRooms)
+  setRooms(userRooms);
+});
+
+
+
+fetchPersonalChatRooms(userdata.uid);
+      
+  };
+  // TO get channels 
+
+  const signOut = () => {
+    auth.signOut().then(()=>{
+      // console.log(user)
+      localStorage.removeItem('user');
+      setUser(null);
+    })
+  }
+
+  // useEffect(() =>{
+    
+  //   if(user)
+  //   {
+      
+      
+  //   }
+  // }, [user])
+  
     
   
     return(
-        <Context.Provider value={{setUser,user,signOut,usersChatRooms,setusersChatRooms,admin,rooms,setUserLists,userlists ,
-          setShowAlert,alert,showAlert,alertmessage,alerttype 
+        <Context.Provider value={{setUser,Loader,user,signOut,usersChatRooms,setusersChatRooms,admin,rooms,setUserLists,userlists ,
+          setShowAlert,alert,showAlert,alertmessage,alerttype , TaskData,
           
           }} >
             {props.children}

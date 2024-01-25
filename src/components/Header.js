@@ -16,6 +16,7 @@ function Header({setcUser,cuser}) {
   const clickedOut = ()=>{
     setcUser();
     signOut();
+    localStorage.clear()
   }
 
 
