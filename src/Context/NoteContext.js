@@ -53,6 +53,7 @@ export const NoteContext=(props)=>{
               const userData = userSnapshot.docs[0].data();
               setUser(userData);
               getuserLists(userData);
+              console.log("first")
             } else {
               console.log('User not found in userlists collection.');
               setLoader(false)
@@ -69,7 +70,7 @@ export const NoteContext=(props)=>{
     useEffect(() => {
       // setLoader(true)
       getUserDataFromAccessToken(localStorage.getItem('accesstoken'))
-    }, [user])
+    }, [localStorage])
 
 
     // TO GET DATA

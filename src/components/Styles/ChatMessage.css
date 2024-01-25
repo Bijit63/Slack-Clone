@@ -1,22 +1,49 @@
 .container-chatmessage {
-            padding: 10px 20px;
             display: flex;
             /* align-items: center;  */
+            
             word-wrap: break-word;
+            width: 100%;
+           
         }
         
 .container-ownchatmessage {
-            padding: 10px 20px;
             display: flex;
             /* align-items: center;  */
             justify-content: end;
             flex-direction: row-reverse;
             word-wrap: break-word;
+            
+        }
+
+        
+
+        .text-container{
+            display: flex;
+            padding: 10px 20px;
+            background-color: rgba(85, 5, 117, 0.144);
+            border-radius: 8px;
+            margin: 13px;
+            word-wrap: break-word;
+            max-width: 60%;
+        }
+        
+
+        .owntext-container{
+            display: flex;
+            padding: 10px 20px;
+            background-color: rgba(14, 194, 134, 0.178);
+            border-radius: 8px;
+            margin: 13px;
+            word-wrap: break-word;
+            max-width: 60%;
         }
 
         .user-avatar {
-            width: 36px;
-            height: 36px;
+            min-width: 36px;
+            min-height: 36px;
+            max-width: 36px;
+            max-height: 36px;
             /* overflow: hidden; */
             margin-right: 8px;
             
@@ -50,7 +77,17 @@
         .message-content {
             display: flex;
             flex-direction: column;
-            max-width: 700px;
+            max-width: 91%;
+            gap: 5px;
+            padding: 3px 0;
+            
+        }
+        .message-contentown{
+            display: flex;
+            flex-direction: column;
+            max-width: 100%;
+            gap: 5px;
+            padding: 3px 0;
         }
 
         .name {
@@ -76,7 +113,6 @@
             font-size: 15px;
             line-height: 1.4;
             text-align: end;
-            
             font-family: 'Inter', sans-serif;
         }
 
@@ -89,6 +125,6 @@
 
         .text{
             text-align: start;
-            max-width: 700px;
+            max-width: 100%;
             text-wrap: wrap;
         }

@@ -67,14 +67,18 @@ function ChatMessage({ text, name, image, timestamp,uid,messageId,PersonalChat }
 
     return (
         <div className={`${user.uid===uid?'container-ownchatmessage':"container-chatmessage"} `}>
-        <div className="user-avatar" onMouseEnter={()=>{mouseenter()}} onMouseLeave={()=>{mouseexit()}} >
-            <img src={image}  />
+
+          <div className={`${user.uid===uid?'owntext-container':"text-container"} `}>
+            
+         {uid!==user.uid && <div className="user-avatar" onMouseEnter={()=>{mouseenter()}} onMouseLeave={()=>{mouseexit()}} >
+           <img src={image}  />
 
             <div onClick={()=>{checkOrCreateChatRoom(uid,user.uid,name,image)}} className={`${uid!==user.uid?activemessageID===messageId?PersonalChat!==true?"gotochat":"gotochathide":"gotochathide":"gotochathide"} `}>
               Go to Chat
             </div>
-        </div>
-        <div className="message-content">
+        </div>}
+
+        <div className={`${user.uid===uid?'message-contentown':"message-content"} `}>
             <span className={`${user.uid===uid?'nameown':"name"} `}>
                 {name}
                 <span>{new Date(timestamp.toDate()).toLocaleString('en-IN',{
@@ -93,6 +97,7 @@ function ChatMessage({ text, name, image, timestamp,uid,messageId,PersonalChat }
                 {text}
             </span>
         </div>
+    </div>
     </div>
     )
 }
