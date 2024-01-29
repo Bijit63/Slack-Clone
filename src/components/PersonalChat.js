@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { BsInfoCircle } from 'react-icons/bs';
 import ChatInput from './ChatInput'
@@ -10,6 +10,8 @@ import './Styles/PersonalChat.css'
 import { Context } from '../Context/NoteContext';
 
 const PersonalChat = ({}) => {
+  
+  const messageContainerRef = useRef(null);
 
     const context = useContext(Context)
     const {user} = context
@@ -24,12 +26,28 @@ const PersonalChat = ({}) => {
         db.collection('personalMessages')
         .doc(channelId)
         .collection('messages')
-        .orderBy('timestamp', 'asc')
+        .orderBy('timestamp', 'desc')
         .onSnapshot((snapshot)=>{
-            let messages = snapshot.docs.map((doc)=>doc.data());
-            setMessages(messages);
+          let messages = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data()
+          }));
+          setMessages(messages);
+          console.log(messages)
         })
     }
+
+    const applyStyles = () => {
+      if (messageContainerRef.current) {
+        messageContainerRef.current.style.flexDirection = 'column-reverse';
+  
+      }
+    };
+
+    useEffect(()=>{
+      applyStyles();
+    }, [messages])
+
 
 
 
@@ -42,7 +60,9 @@ const sendMessage = async (text) => {
         timestamp: firebase.firestore.Timestamp.now(),
         user: user.name,
         userImage: user.photo,
-        userID:user.uid
+        userID:user.uid,
+        reactionCount:[],
+        reactions:[]
       });
       console.log('Message sent successfully');
     } catch (error) {
@@ -100,17 +120,22 @@ useEffect(()=>{
         </div>
         </div>
 
-           <div class="pmessage-container">
+           <div class="pmessage-container" ref={messageContainerRef}>
                 {
                     messages.length > 0 &&
                     messages.map((data, index)=>(
                         <ChatMessage
+                            key={data.id}
                             uid={data.userID}
                             text={data.text}
                             name={data.user}
                             image={data.userImage}
                             timestamp={data.timestamp}
                             PersonalChat={true}
+                            messageId={data.id}
+                            channelId={channelId}
+                            reactionCount={data.reactionCount}
+                            reactions={data.reactions}
                         />
                     ))
                 }

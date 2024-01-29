@@ -75,7 +75,6 @@ function Chat({  }) {
         id: doc.id,
         ...doc.data()
       }));
-      
       setMessages(messages);
     });
   
@@ -84,15 +83,15 @@ function Chat({  }) {
 
     const sendMessage = (text) => {
       
-
-
         if(channelId){
             let payload = {
                 text: text,
                 timestamp: firebase.firestore.Timestamp.now(),
                 user: user.name,
                 userImage: user.photo,
-                userID:user.uid
+                userID:user.uid,
+                reactionCount:[],
+                reactions:[]
             }
             db.collection("rooms").doc(channelId).collection('messages').add(payload);
         }
@@ -265,7 +264,11 @@ function Chat({  }) {
                             name={data.user}
                             image={data.userImage}
                             timestamp={data.timestamp}
+                            PersonalChat={false}
                             messageId={data.id}
+                            channelId={channelId}
+                            reactionCount={data.reactionCount}
+                            reactions={data.reactions}
                         />
                     ))
                 }

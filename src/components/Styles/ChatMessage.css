@@ -21,11 +21,12 @@
         .text-container{
             display: flex;
             padding: 10px 20px;
-            background-color: rgba(85, 5, 117, 0.144);
+            background-color: rgba(134, 11, 182, 0.112);
             border-radius: 8px;
             margin: 13px;
             word-wrap: break-word;
-            max-width: 60%;
+            max-width: 55%;
+            position: relative;
         }
         
 
@@ -36,7 +37,12 @@
             border-radius: 8px;
             margin: 13px;
             word-wrap: break-word;
-            max-width: 60%;
+            max-width: 55%;
+            position: relative;
+        }
+
+        .reactionCountpresent{
+            margin-bottom: 35px;
         }
 
         .user-avatar {
@@ -79,7 +85,7 @@
             flex-direction: column;
             max-width: 91%;
             gap: 5px;
-            padding: 3px 0;
+            padding: 5px 0;
             
         }
         .message-contentown{
@@ -87,7 +93,7 @@
             flex-direction: column;
             max-width: 100%;
             gap: 5px;
-            padding: 3px 0;
+            padding: 5px 0;
         }
 
         .name {
@@ -127,4 +133,172 @@
             text-align: start;
             max-width: 100%;
             text-wrap: wrap;
+            font-size: 15.1px;
         }
+
+        .EmojiSelect {
+            position: absolute;
+            right: -70px;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 22px;
+            cursor:pointer;
+        }
+        
+
+        .EmojiSelectOwn {
+            position: absolute;
+            left: -40px;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 22px;
+            cursor:pointer;
+            /* background-color: brown; */
+        }
+        
+        
+
+
+
+        .reaction-bar{
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            right: -520px;
+            z-index: 10;
+            
+        }
+        .reaction-barown{
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: -180px;
+            z-index: 10;
+        }
+
+
+
+    .reaction-countown{
+        position: absolute;
+        bottom: -14px;
+        height: 20px;
+        background-color: rgb(149, 220, 197);
+        box-shadow: 0px 0px 2px black;
+        max-width: 90%;
+        
+        padding: 1px 6px;
+        display: flex;
+        gap: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        
+    }
+
+
+    .reaction-count{
+        position: absolute;
+        bottom: -14px;
+        height: 20px;
+        background-color: rgb(115, 17, 154);
+        box-shadow: 0px 0px 2px black;
+        max-width: 90%;
+        padding: 1px 6px;
+        color: white;
+        display: flex;
+        gap: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+
+    .reaction-details{
+        display: flex;
+        align-items: center;
+    }
+
+
+
+    .reactions{
+        display: flex;
+        align-items: center;
+    }
+
+    .reactions-emoji{
+        margin-top: 10px;
+    }
+    .reactions-count{
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+
+    .modal-content-reaction{
+        background-color: aqua;
+    }
+
+
+
+
+    .reaction-container {
+        text-align: center;
+        display: flex;
+        align-items: center;
+        padding: 1px 10px;
+        max-height: 50px;
+        min-height: 50px;
+        width: 330px;
+        justify-content: space-between;
+        cursor: pointer;
+      }
+    .reaction-container:hover{
+        background-color: aliceblue;
+    }
+
+      .reaction-image-username{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      
+      .user-image-reaction {
+        max-width: 24px;
+        max-height: 24px;
+        border-radius: 50%;
+      }
+      
+      .username-reaction-text {
+        font-weight: 500;
+        font-size: 14px;
+        font-family: 'Inter', sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        
+      }
+      
+      .username-reaction {
+        font-weight: 500;
+        font-size: 14px;
+        font-family: 'Inter', sans-serif;
+        
+      }
+
+      .remove-reaction{
+          position: absolute;
+        font-size: 12px;
+        font-weight: 300;
+        color: rgba(255, 0, 0, 0.616);
+        width: 140px;
+        right: -48px;
+        top: 20px;
+      }
+
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 3px; /* You can adjust the width as needed */
+      }
+      
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background-color: #888; /* Change the color as needed */
+      }

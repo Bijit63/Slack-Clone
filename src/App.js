@@ -16,6 +16,7 @@ import { NoteContext } from './Context/NoteContext';
 import Alert from './components/Alert';
 import firebase from 'firebase/compat/app';
 import ChatnTaskLoader from './components/ChatnTaskLoader';
+import Emoji from './components/Emoji';
 
 
 function App() {
@@ -78,6 +79,7 @@ function App() {
               <Sidebar  />
               <Routes>
                 <Route path="/Users" element={<UserList  />} />
+                <Route path="/emoji" element={<Emoji  />} />
                 <Route path="/room/:channelId" element={<Chat user={cuser} />} />
                 <Route path="/Task"  element={<Task/>}  />
                 <Route path="/personalroom/:channelId" element={<PersonalChat user={cuser} />} />
