@@ -305,7 +305,7 @@ fetchPersonalChatRooms(userdata.uid);
     
   
     return(
-        <Context.Provider value={{setUser,Loader,user,signOut,usersChatRooms,setusersChatRooms,admin,rooms,setUserLists,userlists ,
+        <Context.Provider value={{setUser,Loader,user,signOut,getuserLists,usersChatRooms,setusersChatRooms,admin,rooms,setUserLists,userlists ,
           setShowAlert,alert,showAlert,alertmessage,alerttype , TaskData,
           
           }} >

@@ -10,7 +10,7 @@ function Login({setcUser}) {
 
   const context = useContext(Context)
   
-  const {setUser} = context
+  const {setUser,getuserLists} = context
 
 
     const signIn = () => {
@@ -42,6 +42,7 @@ function Login({setcUser}) {
                     setUser(newUser);
                     setcUser(newUser);
                     console.log('New user added to userlists collection:', newUser);
+                    getuserLists(newUser)
                   })
                   .catch((error) => {
                     console.error('Error adding new user to userlists collection:', error);
@@ -60,6 +61,7 @@ function Login({setcUser}) {
                   localStorage.setItem('accesstoken', result.credential.accessToken);
                   setUser(updatedUser);
                   setcUser(updatedUser);
+                  getuserLists(updatedUser)
                   console.log('User data updated for existing user:', updatedUser);
                 })
                 .catch((error) => {
