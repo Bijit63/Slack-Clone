@@ -283,6 +283,7 @@
         font-size: 14px;
         font-family: 'Inter', sans-serif;
         
+        
       }
 
       .remove-reaction{
@@ -290,9 +291,9 @@
         font-size: 12px;
         font-weight: 300;
         color: rgba(255, 0, 0, 0.616);
-        width: 140px;
-        right: -48px;
+        
         top: 20px;
+        left: 0;
       }
 
       .custom-scrollbar::-webkit-scrollbar {
