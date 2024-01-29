@@ -161,7 +161,7 @@ const UserList = () => {
                      <option value="admin">Admin</option>
                      <option value="manager">Manager</option>
                      <option value="user">User</option>
-                     <option value="noaccess">No Access</option>
+                     <option value="user">No Access</option>
                     </select>
                     </div>
                     <p onClick={()=>{checkOrCreateChatRoom(userdata.userId,user.uid,userdata.username,userdata.image)}} className='DM'> DM</p>

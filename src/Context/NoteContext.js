@@ -285,6 +285,7 @@ fetchPersonalChatRooms(userdata.uid);
   };
   // TO get channels 
 
+  
   const signOut = () => {
     auth.signOut().then(()=>{
       // console.log(user)

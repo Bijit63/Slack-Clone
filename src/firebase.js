@@ -4,13 +4,13 @@ import 'firebase/compat/firestore';
 
 // Your Firebase config object
 const firebaseConfig = {
-  apiKey: "AIzaSyB5TK4TS4XFSClhZHX9OAwU_msXakn-3gI",
-  authDomain: "slack-clone-6bab2.firebaseapp.com",
-  projectId: "slack-clone-6bab2",
-  storageBucket: "slack-clone-6bab2.appspot.com",
-  messagingSenderId: "396894926730",
-  appId: "1:396894926730:web:40e1480ce4b9ec0b4d7a73",
-  measurementId: "G-NTN6D8TD5T"
+  apiKey: "AIzaSyArXBw08EqEVrgx0638wIy0QS7XDmYCRsw",
+  authDomain: "chatsphere-92e0d.firebaseapp.com",
+  projectId: "chatsphere-92e0d",
+  storageBucket: "chatsphere-92e0d.appspot.com",
+  messagingSenderId: "489625636293",
+  appId: "1:489625636293:web:045be793833cac8ea50fac",
+  measurementId: "G-RQ31RD8RC0"
 };
 
 // Initialize Firebase

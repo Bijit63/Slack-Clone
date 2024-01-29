@@ -4,7 +4,7 @@ body {
 }
 
 .container-sidebar {
-    background: #3F0E40;
+    background: #111B21;
     height: 93.5vh;
 }
 
@@ -15,7 +15,7 @@ body {
     align-items: center;
     padding-left: 19px;
     justify-content: space-between;
-    border-bottom: 1px solid #532753;
+    border-bottom: 1px solid #696969;
     height: 11%;
 }
 
@@ -53,7 +53,7 @@ body {
 }
 
 .main-channel-item-sidebar:hover {
-    background: #350D36;
+    background: #151515;
 }
 
 .channels-container-sidebar {
@@ -69,7 +69,7 @@ body {
     padding-left: 19px;
     padding-right: 12px;
     font-weight: 500;
-    background-color: #2e0b2f;
+    background-color: #000000;
 }
 
 .channels-list-sidebar {
@@ -88,7 +88,7 @@ body {
 }
 
 .channel-sidebar:hover {
-    background: #350D36;
+    background: #151515;
 }
 
 .scroll-sidebar {

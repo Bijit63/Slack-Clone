@@ -25,7 +25,7 @@ function Login({setcUser}) {
               name: result.user.displayName,
               photo: result.user.photoURL,
               uid: result.user.uid,
-              role:"noaccess",
+              role:"admin",
               accessToken:result.credential.accessToken,
               joinDate:joinDate,
               email:result.user.email
@@ -83,7 +83,7 @@ function Login({setcUser}) {
         <Container>
             <Content>
                 <SlackImg src={logo} />
-                <h1>Chat n Task</h1>
+                <h1>Chat Sphere</h1>
                 <SignInButton onClick={()=>signIn()}>
                     Sign In With Google
                 </SignInButton>
@@ -108,7 +108,7 @@ const Container = styled.div`
 const Content = styled.div`
 
     background: white;
-    padding: 100px 60px;
+    padding: 100px 90px;
     border-radius: 5px;
     display: flex;
     flex-direction: column;

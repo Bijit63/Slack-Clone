@@ -76,7 +76,7 @@ function Sidebar(props) {
         <div className="container-sidebar">
         <div className="workspace-container-sidebar">
         <div className="name-sidebar">
-                Chat n Task
+                Chat-Sphere
             </div>
 
                 <div className="new-message-sidebar">
@@ -87,7 +87,7 @@ function Sidebar(props) {
             <div className='scroll-sidebar' >
 
             <div className="main-channels-sidebar">
-                {
+                {/* {
                     sidebarItemsData.map(item => (
                         <div key={item.text} className='main-channel-item-sidebar'>
                             {item.icon}
@@ -95,11 +95,8 @@ function Sidebar(props) {
                             
                         </div>
                     ))
-                }
-                <div className='main-channel-item-sidebar' onClick={()=>{navigate('/Task')}} >
-                    <BsGrid1X2Fill/>
-                    Task
-                </div>
+                } */}
+                
                 <div className='main-channel-item-sidebar' onClick={()=>{navigate('/Users')}} >
                     <BsPeople/>
                     UserList

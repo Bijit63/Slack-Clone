@@ -31,7 +31,7 @@ const ChatnTaskLoader = () => {
         </div>
     </div>
        
-        <div className='Loader-head'>Chat n Task</div>
+        <div className='Loader-head'>Chat Sphere</div>
 
 
         
